@@ -1,20 +1,28 @@
 extends Sprite2D
+## Controls location of attack radius indicator
+##
+## Determines location based on collision shape and center (sprite2D) [CHANGE CENTER]
 
-@export var attack_radius: CollisionShape2D
+@export var attack_radius: CollisionShape2D 	# CircleShape2D expected
 @onready var sprite_2d: Sprite2D = $"../Sprite2D"
 
-# Called when the node enters the scene tree for the first time.
+# Multiplied by max_dist to get accurate offset, 2.5 is exactly on circle collider perimeter
+const DISTANCE_MULTIPLIER: float = 2
+var max_dist_from_player: float
+
 func _ready() -> void:
-	pass # Replace with function body.
+	max_dist_from_player = attack_radius.shape.get_rect().size.x * DISTANCE_MULTIPLIER
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	var length = attack_radius.shape.get_rect().size * 2.5
-	var mouse_direction := (get_global_mouse_position() - sprite_2d.global_position).normalized()
-	if Input.is_action_just_pressed("print_debug"):
-		print(attack_radius.shape.get_rect().size)
-	if (get_global_mouse_position() - sprite_2d.global_position).length() > length.x:
-		self.global_position = sprite_2d.global_position + (length.x * mouse_direction)
+	# Moves attack radius indicator to mouse position not beyond max_dist distance
+	move_indicator()
+
+func move_indicator():
+	var mouse_distance := get_global_mouse_position() - sprite_2d.global_position
+	var mouse_direction := mouse_distance.normalized()
+	
+	# If mouse is farther than radius, clamp with max_dist, otherwise use mouse position
+	if mouse_distance.length() > max_dist_from_player:
+		self.global_position = sprite_2d.global_position + (max_dist_from_player * mouse_direction)
 	else:
 		self.global_position = get_global_mouse_position()
