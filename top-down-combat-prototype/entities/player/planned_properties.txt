@@ -1,3 +1,47 @@
 player stats
 state machine
+	determined by class
+		inserted as components to be called by state machine
+	dodge
+	parry
+	attack
+	heavy attack
+	finishing attack
 animator
+	determined by class/weapon
+leveling
+	with leveling system including possible skill tree
+	different classes level differently and get different abilities
+	public enum/dict class with types that have their own leveling system
+	perks that increase damage the more of one type of class (specific or general) equipped
+	game starts out as choosing any weapon that's fun and leveling up encourages specialization
+
+combat
+	enemies display when they are targeted
+	player is sent toward enemy and attacks - consumes mana/stamina/ammo/summons
+		all consumption stats constantly regenerate
+		happens if within attack radius and attack indicator is within enemy range
+		player can charge up attack for different attack patterns
+		player may be required to time attack combo correctly to continue attack pattern
+	player can parry attacks in small window and stun enemies
+		parrying slows time and allows for a flurry similar to botw
+	player can dodge, consuming mana/stamina/ammo/summons
+	player selects one of four classes
+		classes are similar enough to be mixed and matched in terms of abilities and whatnot
+			weapon(s) determine attack pattern
+			offhand determines parry
+			circlet/other decorative/trinket determines dodge
+		magic
+			mix between long range and short range
+		melee
+			short range with bonuses for one-on-one/smaller scale fights
+		ranged
+			longer range and more crowd control abilities
+			uses arrows and explosives
+			parry with smoke bomb or something and teleport behind enemy to do extra damage
+		summoning
+			has a max number of summons that constantly regenerate
+			can destroy themselves to deal large amounts of damage and parry
+			different weapons change summoning behavior
+			summons are small objects that float/roam around player
+			player sends summons after enemies instead of attacking themselves

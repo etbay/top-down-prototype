@@ -1,0 +1,6 @@
+attack behavior
+	have telegraphed attacks that can be parried before they hit the player
+
+combat
+	take more damage from behind
+	have rings underneath highlighting which one the player will attack

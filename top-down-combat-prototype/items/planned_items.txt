@@ -1,2 +1,6 @@
 weapons
 	unique weapon behavior
+modifiers
+	change player stats and grant unique abilities
+pickups
+	health pickups, mana/stamina/ammo pickups
