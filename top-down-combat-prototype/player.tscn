@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://bqpajljvxwv33"]
+
+[ext_resource type="Script" path="res://player_controller.gd" id="1_xugg5"]
+[ext_resource type="Texture2D" uid="uid://i8jvp54sfi3e" path="res://placeholder.png" id="2_w1ykh"]
+[ext_resource type="Texture2D" uid="uid://b4m5ddvd13714" path="res://icon.svg" id="3_jmt3p"]
+[ext_resource type="Script" path="res://attack_radius_indicator.gd" id="4_ij6l8"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vu11o"]
+radius = 4.0
+height = 15.5
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bta2m"]
+radius = 30.0
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_xugg5")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_w1ykh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.25)
+shape = SubResource("CapsuleShape2D_vu11o")
+
+[node name="AttackRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRadius"]
+shape = SubResource("CircleShape2D_bta2m")
+
+[node name="Attack Radius Indicator" type="Sprite2D" parent="." node_paths=PackedStringArray("attack_radius")]
+position = Vector2(-18, -19)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("3_jmt3p")
+script = ExtResource("4_ij6l8")
+attack_radius = NodePath("../AttackRadius/CollisionShape2D")
+
+[connection signal="body_entered" from="AttackRadius" to="." method="_on_attack_radius_entered"]
+[connection signal="body_exited" from="AttackRadius" to="." method="_on_attack_radius_exited"]
