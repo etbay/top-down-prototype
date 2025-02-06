@@ -24,7 +24,7 @@ func process_movement() -> void:
 	if Input.is_action_just_pressed("main_attack"):
 		var enemy = get_closest_enemy()
 		if enemy:
-			enemy.queue_free()
+			enemy.damage()
 	
 	if Input.is_action_just_pressed("print_debug"):
 		#print_closest()

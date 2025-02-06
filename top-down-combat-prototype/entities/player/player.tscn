@@ -47,5 +47,23 @@ attack_radius = NodePath("../Attack Radius/Radius Distance")
 light_mask = 4
 visibility_layer = 4
 
+[node name="State Machine" type="Node2D" parent="."]
+
+[node name="Walk" type="Node2D" parent="State Machine"]
+
+[node name="Run" type="Node2D" parent="State Machine"]
+
+[node name="Dodge" type="Node2D" parent="State Machine"]
+
+[node name="Parry" type="Node2D" parent="State Machine"]
+
+[node name="Attack" type="Node2D" parent="State Machine"]
+
+[node name="Light" type="Node2D" parent="State Machine/Attack"]
+
+[node name="Medium" type="Node2D" parent="State Machine/Attack"]
+
+[node name="Heavy" type="Node2D" parent="State Machine/Attack"]
+
 [connection signal="body_entered" from="Attack Radius" to="." method="_on_attack_radius_entered"]
 [connection signal="body_exited" from="Attack Radius" to="." method="_on_attack_radius_exited"]
