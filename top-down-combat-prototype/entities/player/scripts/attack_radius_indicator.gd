@@ -4,7 +4,7 @@ extends Sprite2D
 ## Determines location based on collision shape and center (sprite2D) [CHANGE CENTER]
 
 @export var attack_radius: CollisionShape2D 	# CircleShape2D expected
-@onready var sprite_2d: Sprite2D = $"../Sprite2D"
+@export var sprite_2d: Sprite2D
 
 # Multiplied by max_dist to get accurate offset, 2.5 is exactly on circle collider perimeter
 const DISTANCE_MULTIPLIER: float = 2
