@@ -3,9 +3,9 @@ class_name StaminaComponent extends Node2D
 ## Attached to entities that consume [member stamina].
 
 ## Max [member stamina] entity can hold.
-@export var max_stamina: float
+@export var max_stamina: float = 0.0
 ## Will regenerate [member stamina] by this amount every second.
-@export var regeneration_amount: float
+@export var regeneration_amount: float = 0.0
 
 ## Emits signal when [member stamina] is changed.
 signal stamina_changed(new_stamina: float)
@@ -21,11 +21,11 @@ var stamina: float:
 ## Determines if entity can regenerate [member stamina].
 var regenerates_stamina: bool = true
 
-## Returns if [member stamina] is empty.
+## Returns true if [member stamina] is empty.
 var is_stamina_empty: bool:
 	get:
 		return stamina <= 0.0
-## Returns if [member stamina] is full.
+## Returns true if [member stamina] is full.
 var is_stamina_full: bool:
 	get:
 		return stamina >= max_stamina
@@ -39,7 +39,7 @@ func _process(delta: float) -> void:
 		regenerate_stamina(delta)
 	print(stamina)
 
-## Regenerates [member stamina] modified by [member regeneration_percent].
+## Regenerates [member stamina] by [member regeneration_amount] every second.
 func regenerate_stamina(delta: float) -> void:
 	if stamina < max_stamina:
 		stamina += regeneration_amount * delta
