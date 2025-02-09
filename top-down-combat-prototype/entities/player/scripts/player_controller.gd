@@ -5,16 +5,34 @@ class_name PlayerController extends CharacterBody2D
 ## Need to move enemy detection to attack radius
 
 @export var player_sprite: Sprite2D
-@export var state_machine: StateMachine
+@export var state_machine: PlayerStateMachine
+
+@export var stamina_bar: ProgressBar
+@export var stamina_component: StaminaComponent
+@export_category("Player Stats")
 
 func _ready() -> void:
-	print(state_machine)
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 func _physics_process(delta: float) -> void:
-	if state_machine.current_state.name != "LightAttack":
+	face_mouse_direction()
+	stamina_bar.value = stamina_component.stamina
+
+func face_mouse_direction() -> void:
+	if not state_machine.is_in_combat_state:
+		# Looks at mouse if it is not absurdly close
+		# Prevents spinning
 		if (get_local_mouse_position() - Vector2(0,0)).length() > 4:
-			player_sprite.look_at(get_global_mouse_position())
-			player_sprite.rotation += deg_to_rad(-90)
+			var target_rotation = self.global_position.angle_to_point(get_global_mouse_position())
+			player_sprite.rotation = lerp_angle(player_sprite.rotation, target_rotation - deg_to_rad(90), 0.5)
+
+#func regenerate_stamina(delta: float) -> void:
+	#if stamina < max_stamina:
+		#stamina += stamina_regeneration * delta
+		#stamina = clampf(stamina, 0.0, max_stamina)
+
+func drain_stamina(amount: float) -> void:
+	stamina_component.drain_stamina(amount)
 
 #func attack() -> void:
 	#var enemy: Enemy = get_closest_enemy()

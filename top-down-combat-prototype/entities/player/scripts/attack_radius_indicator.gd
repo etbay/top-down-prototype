@@ -22,7 +22,4 @@ func move_indicator():
 	var mouse_direction := mouse_distance.normalized()
 	
 	# If mouse is farther than radius, clamp with max_dist, otherwise use mouse position
-	if mouse_distance.length() > max_dist_from_player:
-		self.global_position = sprite_2d.global_position + (max_dist_from_player * mouse_direction)
-	else:
-		self.global_position = get_global_mouse_position()
+	self.global_position = get_global_mouse_position()

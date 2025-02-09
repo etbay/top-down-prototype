@@ -14,9 +14,6 @@ height = 18.8
 
 [node name="TestScene" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_ors88")]
-scale = Vector2(5, 5)
-
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(-4, 253)
 
@@ -65,3 +62,6 @@ shape = SubResource("CapsuleShape2D_tpex2")
 [node name="Sprite2D" type="Sprite2D" parent="Enemy4"]
 modulate = Color(0.992424, 0, 0.232226, 1)
 texture = ExtResource("5_hfgor")
+
+[node name="Player" parent="." instance=ExtResource("1_ors88")]
+scale = Vector2(5, 5)
