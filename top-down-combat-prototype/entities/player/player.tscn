@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bqpajljvxwv33"]
+[gd_scene load_steps=22 format=3 uid="uid://bqpajljvxwv33"]
 
 [ext_resource type="Script" path="res://entities/player/scripts/player_controller.gd" id="1_xugg5"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_state_machine.gd" id="2_7ixmu"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://rkrab8ui20p5" path="res://entities/player/assets/attack_radius_indicator.png" id="4_kk2ty"]
 [ext_resource type="PackedScene" uid="uid://bjl853d4aysq2" path="res://UI/player_hud.tscn" id="6_c6sdx"]
 [ext_resource type="PackedScene" uid="uid://cvjutxiq3jook" path="res://entities/components/stamina_component.tscn" id="7_1la7p"]
+[ext_resource type="Script" path="res://UI/stamina_bar.gd" id="7_053ts"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_idle_state.gd" id="7_lyuci"]
 [ext_resource type="Texture2D" uid="uid://dvc3rcsk8tv0y" path="res://entities/player/assets/Retro Impact Effect Pack 3 C.png" id="7_v5ds0"]
 [ext_resource type="Script" path="res://entities/components/scripts/stamina_component.gd" id="8_ifblt"]
@@ -25,9 +26,6 @@ ProgressBar/styles/fill = SubResource("StyleBoxFlat_y85w6")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w64wb"]
 radius = 9.5
-
-[sub_resource type="Animation" id="Animation_dy21b"]
-resource_name = "walk"
 
 [sub_resource type="Animation" id="Animation_bcua4"]
 resource_name = "attack"
@@ -58,6 +56,9 @@ tracks/1/keys = {
 "values": [true]
 }
 
+[sub_resource type="Animation" id="Animation_dy21b"]
+resource_name = "walk"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qnwkx"]
 _data = {
 "attack": SubResource("Animation_bcua4"),
@@ -67,12 +68,10 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_bta2m"]
 radius = 60.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "state_machine", "stamina_bar", "stamina_component")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "state_machine")]
 script = ExtResource("1_xugg5")
 player_sprite = NodePath("PlayerSprite2D")
 state_machine = NodePath("StateMachine")
-stamina_bar = NodePath("Camera2D/PlayerHud/StaminaBar")
-stamina_component = NodePath("StaminaComponent")
 
 [node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("combat_states", "entity", "initial_state")]
 script = ExtResource("2_7ixmu")
@@ -87,8 +86,9 @@ script = ExtResource("7_lyuci")
 script = ExtResource("9_a15dp")
 WALK_ACCELERATION = 50.0
 
-[node name="LightAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player")]
+[node name="LightAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("stamina_component", "animation_player")]
 script = ExtResource("3_g1rxv")
+stamina_component = NodePath("../../StaminaComponent")
 animation_player = NodePath("../../AnimationPlayer")
 attack_length = 0.7
 stamina_cost = 2.0
@@ -110,9 +110,11 @@ offset_right = -116.0
 offset_bottom = -65.0
 scale = Vector2(0.2, 0.2)
 
-[node name="StaminaBar" parent="Camera2D/PlayerHud" index="0"]
+[node name="StaminaBar" parent="Camera2D/PlayerHud" index="0" node_paths=PackedStringArray("stamina_component")]
 theme = SubResource("Theme_1xgny")
 show_percentage = false
+script = ExtResource("7_053ts")
+stamina_component = NodePath("../../../StaminaComponent")
 
 [node name="StaminaComponent" parent="." instance=ExtResource("7_1la7p")]
 script = ExtResource("8_ifblt")
@@ -134,7 +136,6 @@ texture = ExtResource("2_m1a1i")
 offset = Vector2(0, 3)
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerSprite2D"]
-visible = false
 position = Vector2(0, 23)
 rotation = -1.5708
 texture = ExtResource("7_v5ds0")

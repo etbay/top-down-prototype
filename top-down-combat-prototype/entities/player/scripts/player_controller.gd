@@ -7,16 +7,11 @@ class_name PlayerController extends CharacterBody2D
 @export var player_sprite: Sprite2D
 @export var state_machine: PlayerStateMachine
 
-@export var stamina_bar: ProgressBar
-@export var stamina_component: StaminaComponent
-@export_category("Player Stats")
-
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 func _physics_process(delta: float) -> void:
 	face_mouse_direction()
-	stamina_bar.value = stamina_component.stamina
 
 func face_mouse_direction() -> void:
 	if not state_machine.is_in_combat_state:
@@ -30,9 +25,6 @@ func face_mouse_direction() -> void:
 	#if stamina < max_stamina:
 		#stamina += stamina_regeneration * delta
 		#stamina = clampf(stamina, 0.0, max_stamina)
-
-func drain_stamina(amount: float) -> void:
-	stamina_component.drain_stamina(amount)
 
 #func attack() -> void:
 	#var enemy: Enemy = get_closest_enemy()

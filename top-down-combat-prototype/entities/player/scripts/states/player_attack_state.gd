@@ -4,7 +4,7 @@ extends State
 ## Requires a [StateMachine] parent to manage [State] transitions.
 ## @experimental
 
-@onready var player: PlayerController = $"../.."
+@export var stamina_component: StaminaComponent
 @export var animation_player: AnimationPlayer
 @export var attack_length: float = 5.0
 @export var stamina_cost: float = 5.0
@@ -14,10 +14,10 @@ var attack_direction: Vector2
 
 ## Enter this [State].
 func enter() -> void:
-	if player.stamina_component.stamina >= stamina_cost:
-		player.stamina_component.regenerates_stamina = false
+	if stamina_component.stamina >= self.stamina_cost:
+		stamina_component.regenerates_stamina = false
 		animation_player.play("attack")
-		player.drain_stamina(5)
+		stamina_component.drain_stamina(5)
 		attack_direction = get_local_mouse_position().normalized()
 		_entity.velocity = attack_direction * 500
 		can_attack = true
@@ -33,6 +33,6 @@ func process_behavior(delta: float) -> void:
 
 ## Exit this [State].
 func exit() -> void:
-	player.stamina_component.regenerates_stamina = true
+	stamina_component.regenerates_stamina = true
 	can_attack = false
 	_attack_timer = 0.0

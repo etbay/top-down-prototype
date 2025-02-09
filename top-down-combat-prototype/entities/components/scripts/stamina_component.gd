@@ -1,44 +1,53 @@
+@icon("res://editor icons/stamina_component.png")
 class_name StaminaComponent extends Node2D
-## Attached to entities that consume stamina.
+## Attached to entities that consume [member stamina].
 
-## Max stamina entity can hold.
+## Max [member stamina] entity can hold.
 @export var max_stamina: float
-## Determines how fast entity regenerates stamina. [br]
-## Will regenerate that amount every second.
+## Will regenerate [member stamina] by this amount every second.
 @export var regeneration_amount: float
-## Contains current stamina value.
-var stamina: float
-## Determines if entity can regenerate stamina.
+
+## Emits signal when [member stamina] is changed.
+signal stamina_changed(new_stamina: float)
+
+## Contains current [member stamina] value.
+var stamina: float:
+	get:
+		return stamina
+	set(val):
+		val = clampf(val, 0.0, max_stamina)
+		stamina = val
+		stamina_changed.emit(stamina)
+## Determines if entity can regenerate [member stamina].
 var regenerates_stamina: bool = true
 
-## Returns if stamina is empty.
+## Returns if [member stamina] is empty.
 var is_stamina_empty: bool:
 	get:
 		return stamina <= 0.0
-## Returns if stamina is full.
+## Returns if [member stamina] is full.
 var is_stamina_full: bool:
 	get:
 		return stamina >= max_stamina
 
 func _ready() -> void:
 	stamina = max_stamina
+	stamina_changed.emit(stamina)
 
 func _process(delta: float) -> void:
 	if not is_stamina_full and regenerates_stamina:
 		regenerate_stamina(delta)
+	print(stamina)
 
-## Regenerates stamina modified by [member regeneration_percent].
+## Regenerates [member stamina] modified by [member regeneration_percent].
 func regenerate_stamina(delta: float) -> void:
 	if stamina < max_stamina:
 		stamina += regeneration_amount * delta
-		stamina = clampf(stamina, 0.0, max_stamina)
 
-## Drains current stamina by [param drain_amount].
+## Drains current [member stamina] by [param drain_amount].
 func drain_stamina(drain_amount: float) -> void:
 	stamina -= drain_amount
-	stamina = clampf(stamina, 0.0, max_stamina)
 
-## Increases current stamina by [param gain_amount].
+## Increases current [member stamina] by [param gain_amount].
 func gain_stamina(gain_amount: float) -> void:
 	stamina += gain_amount
-	stamina = clampf(stamina, 0.0, max_stamina)
