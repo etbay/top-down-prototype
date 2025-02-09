@@ -1,21 +1,21 @@
-extends Node
-class_name State
+class_name State extends Node2D
+## Defines behavior [State] for an entity.
+##
+## Requires a [StateMachine] parent to manage [State] transitions.
+## @experimental
 
+## Notifies [StateMachine] of what [State] to transition to.
 signal change_state(new_state: String)
+var _entity: CharacterBody2D
 
-# Transition from previous state to current state
-func enter():
-	pass
+## Enter this [State].
+func enter() -> void:
+	assert(false, self.name + " state of " + self._entity.name + " does not implement Callable enter()")
 
-# Called every frame in state machine
-func process():
-	pass
+## Called every frame in entity's [StateMachine].
+func process_behavior(delta: float) -> void:
+	assert(false, self.name + " state of " + self._entity.name + " does not implement Callable process_behavior(delta: float)")
 
-# Detects input that allows for transition
-# Call at the end of process
-func detect_transition():
-	pass
-
-# Transition from current state to next state
-func exit():
-	pass
+## Exit this [State].
+func exit() -> void:
+	assert(false, self.name + " state of " + self._entity.name + " does not implement Callable exit()")

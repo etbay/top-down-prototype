@@ -1,13 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://bqpajljvxwv33"]
+[gd_scene load_steps=14 format=3 uid="uid://bqpajljvxwv33"]
 
-[ext_resource type="Script" path="res://entities/player/scripts/player_controller.gd" id="1_xugg5"]
+[ext_resource type="Script" path="res://entities/scripts/state_machine.gd" id="1_udy2f"]
 [ext_resource type="Texture2D" uid="uid://dbamkfkdb12yh" path="res://entities/player/assets/prototype_player.png" id="2_m1a1i"]
-[ext_resource type="Script" path="res://entities/player/scripts/states/player_state_machine.gd" id="2_umsm5"]
-[ext_resource type="Script" path="res://entities/player/scripts/states/player_attack_state.gd" id="3_g1rxv"]
+[ext_resource type="Script" path="res://entities/player/scripts/rotate_player_sprite.gd" id="3_tx51m"]
 [ext_resource type="Script" path="res://entities/player/scripts/attack_radius_indicator.gd" id="4_ij6l8"]
 [ext_resource type="Texture2D" uid="uid://rkrab8ui20p5" path="res://entities/player/assets/attack_radius_indicator.png" id="4_kk2ty"]
+[ext_resource type="PackedScene" uid="uid://brmcarx7ctlmn" path="res://entities/components/hurtbox.tscn" id="4_vavyf"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_idle_state.gd" id="7_lyuci"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_walk_state.gd" id="9_a15dp"]
+[ext_resource type="Script" path="res://entities/player/scripts/states/player_attack_state.gd" id="9_k6lo5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w64wb"]
 radius = 9.5
@@ -23,13 +24,10 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_bta2m"]
 radius = 60.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "state_machine")]
-script = ExtResource("1_xugg5")
-player_sprite = NodePath("Sprite2D")
-state_machine = NodePath("StateMachine")
+[node name="Player" type="CharacterBody2D"]
 
 [node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("entity", "initial_state")]
-script = ExtResource("2_umsm5")
+script = ExtResource("1_udy2f")
 entity = NodePath("..")
 initial_state = NodePath("Idle")
 
@@ -40,17 +38,9 @@ script = ExtResource("7_lyuci")
 script = ExtResource("9_a15dp")
 WALK_ACCELERATION = 50.0
 
-[node name="LightAttack" type="Node2D" parent="StateMachine"]
-script = ExtResource("3_g1rxv")
+[node name="Attack" type="Node2D" parent="StateMachine"]
+script = ExtResource("9_k6lo5")
 attack_length = 1.0
-
-[node name="MediumAttack" type="Node2D" parent="StateMachine"]
-
-[node name="HeavyAttack" type="Node2D" parent="StateMachine"]
-
-[node name="Parry" type="Node2D" parent="StateMachine"]
-
-[node name="Dodge" type="Node2D" parent="StateMachine"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -64,10 +54,6 @@ libraries = {
 "": SubResource("AnimationLibrary_qnwkx")
 }
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_m1a1i")
-offset = Vector2(0, 3)
-
 [node name="AttackRadius" type="Area2D" parent="."]
 
 [node name="Radius Distance" type="CollisionShape2D" parent="AttackRadius"]
@@ -80,6 +66,19 @@ texture = ExtResource("4_kk2ty")
 script = ExtResource("4_ij6l8")
 attack_radius = NodePath("../AttackRadius/Radius Distance")
 sprite_2d = NodePath("../Sprite2D")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+
+[node name="Hurtbox Shape" parent="Hurtbox" instance=ExtResource("4_vavyf")]
+light_mask = 4
+visibility_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="." node_paths=PackedStringArray("state_machine")]
+texture = ExtResource("2_m1a1i")
+offset = Vector2(0, 3)
+script = ExtResource("3_tx51m")
+object_rotation_degrees = -90
+state_machine = NodePath("../StateMachine")
 
 [connection signal="body_entered" from="AttackRadius" to="." method="_on_attack_radius_entered"]
 [connection signal="body_exited" from="AttackRadius" to="." method="_on_attack_radius_exited"]

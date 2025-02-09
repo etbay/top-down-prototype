@@ -13,7 +13,7 @@ var max_dist_from_player: float
 func _ready() -> void:
 	max_dist_from_player = attack_radius.shape.get_rect().size.x * DISTANCE_MULTIPLIER
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# Moves attack radius indicator to mouse position not beyond max_dist distance
 	move_indicator()
 
