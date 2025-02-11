@@ -12,12 +12,15 @@ var _attack_timer: float = 0.0
 var can_attack: bool = false
 var attack_direction: Vector2
 
-## Enter this [State].
+## Enter player attack [State].
+## Initiates attack if player has enough stamina.
 func enter() -> void:
-	if stamina_component.stamina >= self.stamina_cost:
-		stamina_component.regenerates_stamina = false
+	if stamina_component.has_at_least(stamina_cost):
+		stamina_component.pause_stamina_regeneration(attack_length)
+		stamina_component.drain_by(5)
+		
 		animation_player.play("attack")
-		stamina_component.drain_stamina(5)
+		
 		attack_direction = get_local_mouse_position().normalized()
 		_entity.velocity = attack_direction * 500
 		can_attack = true
@@ -33,6 +36,5 @@ func process_behavior(delta: float) -> void:
 
 ## Exit this [State].
 func exit() -> void:
-	stamina_component.regenerates_stamina = true
 	can_attack = false
 	_attack_timer = 0.0
