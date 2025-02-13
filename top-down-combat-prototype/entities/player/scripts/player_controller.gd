@@ -6,12 +6,18 @@ class_name PlayerController extends CharacterBody2D
 
 @export var player_sprite: Sprite2D
 @export var state_machine: PlayerStateMachine
+@export var player_stats: PlayerStats
+var stamina: StaminaComponent
 
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	# Initialize StaminaComponent
+	stamina = StaminaComponent.new(player_stats.max_stamina, player_stats.stamina_regeneration_amount)
+	add_child(stamina)
 
 func _physics_process(delta: float) -> void:
 	face_mouse_direction()
+	if Input.is_action_just_pressed("main_attack"):
+		stamina.drain_by(5)
 
 func face_mouse_direction() -> void:
 	if not state_machine.is_in_combat_state:

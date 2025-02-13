@@ -2,8 +2,8 @@
 class_name StaminaComponent extends Node
 ## Attached to entities that consume [member stamina].
 # May add the following functionalities:
-#	Function that changes regeneration_amount for a time_in_seconds
-#	Bool that determines if stamina increases in regeneration_amount over time
+#	Function that changes regeneration_amount for a time_in_seconds.
+#	Bool that determines if stamina increases in regeneration_amount over time.
 
 ## Emits signal when [member stamina] is changed.
 signal stamina_changed(new_stamina: float)
@@ -32,10 +32,13 @@ var _stamina: float:
 	get:
 		return _stamina
 	set(val):
+		# Ensure new value is not current stamina
 		if val != _stamina:
 			val = clampf(val, 0.0, max_stamina)
 			_stamina = val
+			# Inform listeners of change
 			stamina_changed.emit(_stamina)
+		# Inform listeners if stamina is empty or full
 		if _stamina <= 0:
 			stamina_empty.emit()
 		elif _stamina >= max_stamina:
@@ -55,6 +58,9 @@ var is_stamina_full: bool:
 # Returns true if stamina is paused, enabled and disabled in pause_stamina_regeneration
 var _regen_paused: bool = false
 
+func _init(max_stamina: float, regeneration_amount: float) -> void:
+	self.max_stamina = max_stamina
+	self.regeneration_amount = regeneration_amount
 
 func _ready() -> void:
 	_stamina = max_stamina
@@ -62,6 +68,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_regenerate_stamina(delta)
+	print(_stamina)
 
 # Regenerates stamina by regeneration_amount every second.
 func _regenerate_stamina(delta: float) -> void:
@@ -69,19 +76,19 @@ func _regenerate_stamina(delta: float) -> void:
 		_stamina += regeneration_amount * delta
 
 ## Drains current [member stamina] by [param drain_amount].
-func drain_by(drain_amount: float) -> void:
-	_stamina -= drain_amount
+func drain_by(drain_amount: float) -> bool:
+	if (_stamina >= drain_amount):
+		_stamina -= drain_amount
+		return true
+	else:
+		return false
 
 ## Increases current [member stamina] by [param gain_amount].
-func gain_by(gain_amount: float) -> void:
-	_stamina += gain_amount
-
-## Returns true if [member stamina] is at least [param stamina_amount].
-func has_at_least(stamina_amount: float) -> bool:
-	return _stamina >= stamina_amount
+func increase_by(increase_amount: float) -> void:
+	_stamina += increase_amount
 
 ## Pauses [member stamina] regeneration for [param time_in_seconds].
-func pause_stamina_regeneration(time_in_seconds: float) -> void:
+func pause_regeneration(time_in_seconds: float) -> void:
 	_regen_paused = true
 	await get_tree().create_timer(time_in_seconds).timeout
 	_regen_paused = false
