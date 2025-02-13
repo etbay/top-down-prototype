@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bqpajljvxwv33"]
+[gd_scene load_steps=23 format=3 uid="uid://bqpajljvxwv33"]
 
 [ext_resource type="Script" path="res://entities/player/scripts/player_controller.gd" id="1_xugg5"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_state_machine.gd" id="2_7ixmu"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://bjl853d4aysq2" path="res://UI/player_hud.tscn" id="6_c6sdx"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_idle_state.gd" id="7_lyuci"]
 [ext_resource type="Texture2D" uid="uid://dvc3rcsk8tv0y" path="res://entities/player/assets/Retro Impact Effect Pack 3 C.png" id="7_v5ds0"]
+[ext_resource type="Script" path="res://UI/stamina_bar.gd" id="8_2wr40"]
+[ext_resource type="Script" path="res://entities/components/scripts/stamina_component.gd" id="8_afltq"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_walk_state.gd" id="9_a15dp"]
 
 [sub_resource type="Resource" id="Resource_6ka4s"]
@@ -71,15 +73,16 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_bta2m"]
 radius = 60.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "state_machine")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "state_machine", "stamina")]
 script = ExtResource("1_xugg5")
 player_sprite = NodePath("PlayerSprite2D")
 state_machine = NodePath("StateMachine")
 player_stats = SubResource("Resource_6ka4s")
+stamina = NodePath("StaminaComponent")
 
-[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("combat_states", "entity", "initial_state")]
+[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("action_states", "entity", "initial_state")]
 script = ExtResource("2_7ixmu")
-combat_states = [NodePath("LightAttack")]
+action_states = [NodePath("LightAttack")]
 entity = NodePath("..")
 initial_state = NodePath("Idle")
 
@@ -93,7 +96,7 @@ WALK_ACCELERATION = 50.0
 [node name="LightAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player")]
 script = ExtResource("3_g1rxv")
 animation_player = NodePath("../../AnimationPlayer")
-attack_length = 0.7
+action_length = 0.7
 stamina_cost = 2.0
 
 [node name="MediumAttack" type="Node2D" parent="StateMachine"]
@@ -113,14 +116,19 @@ offset_right = -116.0
 offset_bottom = -65.0
 scale = Vector2(0.2, 0.2)
 
-[node name="StaminaBar" parent="Camera2D/PlayerHud" index="0"]
+[node name="StaminaBar" parent="Camera2D/PlayerHud" index="0" node_paths=PackedStringArray("stamina_component")]
 offset_right = 19.0
 theme = SubResource("Theme_1xgny")
+script = ExtResource("8_2wr40")
+stamina_component = NodePath("../../../StaminaComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.5)
 rotation = 1.5708
 shape = SubResource("CircleShape2D_w64wb")
+
+[node name="StaminaComponent" type="Node" parent="."]
+script = ExtResource("8_afltq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -137,7 +145,7 @@ rotation = -1.5708
 texture = ExtResource("7_v5ds0")
 hframes = 6
 vframes = 24
-frame = 65
+frame = 71
 
 [node name="AttackRadius" type="Area2D" parent="."]
 

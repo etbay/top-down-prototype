@@ -1,20 +1,21 @@
 class_name PlayerStateMachine extends StateMachine
 
+signal notify_action(stamina: float, pause_time: float, action: Callable)
+
 ## List of all combat [State] behaviors.
-@export var combat_states: Array[State]
-## Returns if [member entity] is in a combat [State]
-var is_in_combat_state: bool:
-	get:
-		return combat_states.has(current_state)
+@export var action_states: Array[State]
+## States in line to be performed next. Capped at [member _max_states_queued].
+var action_state_queue: Array[String]
+var _max_states_queued: int = 3
 
 func _ready() -> void:
-	init(initial_state)
+	populate_states(initial_state)
 
 func _process(delta: float) -> void:
 	self.process_state(delta)
 
 ## Initializes [StateMachine].
-func init(initial_state: State) -> void:
+func populate_states(initial_state: State) -> void:
 	# Initialize and enter starting state
 	if initial_state != null:
 		current_state = initial_state
@@ -27,9 +28,14 @@ func init(initial_state: State) -> void:
 	for node in child_nodes:
 		if node is State:
 			node.connect("change_state", Callable(self, "transition_to_state"))
+			if node is ActionState:
+				node.connect("attempting_action", Callable(self, "try_action"))
 			# Pass reference of entity to each state
 			node._entity = self.entity
 			states[node.name] = node
+
+func try_action(stamina: float, pause_time: float, action: Callable) -> void:
+	notify_action.emit(stamina, pause_time, action)
 
 ## Processes [member current_state] behavior every frame.
 func process_state(delta: float) -> void:

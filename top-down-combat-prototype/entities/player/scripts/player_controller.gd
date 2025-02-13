@@ -7,25 +7,32 @@ class_name PlayerController extends CharacterBody2D
 @export var player_sprite: Sprite2D
 @export var state_machine: PlayerStateMachine
 @export var player_stats: PlayerStats
-var stamina: StaminaComponent
+@export var stamina: StaminaComponent
 
 func _ready() -> void:
-	# Initialize StaminaComponent
-	stamina = StaminaComponent.new(player_stats.max_stamina, player_stats.stamina_regeneration_amount)
-	add_child(stamina)
+	state_machine.connect("notify_action", Callable(self, "try_action"))
+	_initialize_components()
+
+func _initialize_components() -> void:
+	stamina.max_stamina = player_stats.max_stamina
+	stamina.regeneration_amount = player_stats.stamina_regeneration_amount
+	stamina.fill()
+
+func try_action(stamina_to_drain: float, pause_time: float, action: Callable) -> void:
+	if stamina.drain_by(stamina_to_drain):
+		stamina.pause_regeneration(pause_time)
+		action.call()
 
 func _physics_process(delta: float) -> void:
 	face_mouse_direction()
-	if Input.is_action_just_pressed("main_attack"):
-		stamina.drain_by(5)
 
 func face_mouse_direction() -> void:
-	if not state_machine.is_in_combat_state:
+	if state_machine.current_state is not ActionState:
 		# Looks at mouse if it is not absurdly close
 		# Prevents spinning
 		if (get_local_mouse_position() - Vector2(0,0)).length() > 4:
 			var target_rotation = self.global_position.angle_to_point(get_global_mouse_position())
-			player_sprite.rotation = lerp_angle(player_sprite.rotation, target_rotation - deg_to_rad(90), 0.5)
+			player_sprite.rotation = lerp_angle(player_sprite.rotation, target_rotation - deg_to_rad(90), 0.3)
 
 #func regenerate_stamina(delta: float) -> void:
 	#if stamina < max_stamina:

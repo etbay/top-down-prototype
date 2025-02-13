@@ -58,10 +58,6 @@ var is_stamina_full: bool:
 # Returns true if stamina is paused, enabled and disabled in pause_stamina_regeneration
 var _regen_paused: bool = false
 
-func _init(max_stamina: float, regeneration_amount: float) -> void:
-	self.max_stamina = max_stamina
-	self.regeneration_amount = regeneration_amount
-
 func _ready() -> void:
 	_stamina = max_stamina
 	stamina_changed.emit(_stamina)
@@ -83,9 +79,17 @@ func drain_by(drain_amount: float) -> bool:
 	else:
 		return false
 
+## Completely drains [member stamina].
+func empty() -> void:
+	_stamina = 0.0
+
 ## Increases current [member stamina] by [param gain_amount].
 func increase_by(increase_amount: float) -> void:
 	_stamina += increase_amount
+
+## Completely fills [member stamina].
+func fill() -> void:
+	_stamina = max_stamina
 
 ## Pauses [member stamina] regeneration for [param time_in_seconds].
 func pause_regeneration(time_in_seconds: float) -> void:
