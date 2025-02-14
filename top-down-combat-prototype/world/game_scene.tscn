@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://vcqehg07dah4"]
 
-[ext_resource type="PackedScene" uid="uid://bqpajljvxwv33" path="res://entities/player/player.tscn" id="1_ors88"]
-[ext_resource type="Texture2D" uid="uid://b4m5ddvd13714" path="res://icon.svg" id="2_xlmj4"]
-[ext_resource type="PackedScene" uid="uid://c7srxpjel43u0" path="res://entities/enemies/enemy.tscn" id="3_6psfi"]
-[ext_resource type="Script" path="res://entities/enemies/scripts/enemy.gd" id="4_t0x4a"]
-[ext_resource type="Texture2D" uid="uid://i8jvp54sfi3e" path="res://entities/enemies/assets/placeholder.png" id="5_hfgor"]
+[ext_resource type="Texture2D" uid="uid://b4m5ddvd13714" path="res://icon.svg" id="1_rbv0r"]
+[ext_resource type="PackedScene" uid="uid://c7srxpjel43u0" path="res://entities/enemies/enemy.tscn" id="2_es5gd"]
+[ext_resource type="Script" path="res://entities/enemies/scripts/enemy.gd" id="3_qwd23"]
+[ext_resource type="Texture2D" uid="uid://i8jvp54sfi3e" path="res://entities/enemies/assets/placeholder.png" id="4_hxdui"]
+[ext_resource type="PackedScene" uid="uid://bqpajljvxwv33" path="res://entities/player/player.tscn" id="5_m0lgt"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ojt17"]
 
@@ -12,7 +12,7 @@
 radius = 6.2
 height = 18.8
 
-[node name="TestScene" type="Node2D"]
+[node name="GameScene" type="Node2D"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(-4, 253)
@@ -22,46 +22,46 @@ shape = SubResource("WorldBoundaryShape2D_ojt17")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(261, -35)
-texture = ExtResource("2_xlmj4")
+texture = ExtResource("1_rbv0r")
 flip_v = true
 
-[node name="Enemy" parent="." instance=ExtResource("3_6psfi")]
+[node name="Enemy" parent="." instance=ExtResource("2_es5gd")]
 
 [node name="Enemy2" type="CharacterBody2D" parent="."]
 position = Vector2(-75, -227)
 scale = Vector2(5, 5)
-script = ExtResource("4_t0x4a")
+script = ExtResource("3_qwd23")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2"]
 shape = SubResource("CapsuleShape2D_tpex2")
 
 [node name="Sprite2D" type="Sprite2D" parent="Enemy2"]
 modulate = Color(0.992424, 0, 0.232226, 1)
-texture = ExtResource("5_hfgor")
+texture = ExtResource("4_hxdui")
 
 [node name="Enemy3" type="CharacterBody2D" parent="."]
 position = Vector2(-303, 237)
 scale = Vector2(5, 5)
-script = ExtResource("4_t0x4a")
+script = ExtResource("3_qwd23")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy3"]
 shape = SubResource("CapsuleShape2D_tpex2")
 
 [node name="Sprite2D" type="Sprite2D" parent="Enemy3"]
 modulate = Color(0.992424, 0, 0.232226, 1)
-texture = ExtResource("5_hfgor")
+texture = ExtResource("4_hxdui")
 
 [node name="Enemy4" type="CharacterBody2D" parent="."]
 position = Vector2(112, 250)
 scale = Vector2(5, 5)
-script = ExtResource("4_t0x4a")
+script = ExtResource("3_qwd23")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy4"]
 shape = SubResource("CapsuleShape2D_tpex2")
 
 [node name="Sprite2D" type="Sprite2D" parent="Enemy4"]
 modulate = Color(0.992424, 0, 0.232226, 1)
-texture = ExtResource("5_hfgor")
+texture = ExtResource("4_hxdui")
 
-[node name="Player" parent="." instance=ExtResource("1_ors88")]
+[node name="Player" parent="." instance=ExtResource("5_m0lgt")]
 scale = Vector2(5, 5)

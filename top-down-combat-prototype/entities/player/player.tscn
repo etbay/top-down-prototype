@@ -7,10 +7,10 @@
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_attack_state.gd" id="3_g1rxv"]
 [ext_resource type="Script" path="res://entities/player/scripts/attack_radius_indicator.gd" id="4_ij6l8"]
 [ext_resource type="Texture2D" uid="uid://rkrab8ui20p5" path="res://entities/player/assets/attack_radius_indicator.png" id="4_kk2ty"]
-[ext_resource type="PackedScene" uid="uid://bjl853d4aysq2" path="res://UI/player_hud.tscn" id="6_c6sdx"]
+[ext_resource type="PackedScene" uid="uid://bjl853d4aysq2" path="res://ui/player_hud.tscn" id="6_c6sdx"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_idle_state.gd" id="7_lyuci"]
 [ext_resource type="Texture2D" uid="uid://dvc3rcsk8tv0y" path="res://entities/player/assets/Retro Impact Effect Pack 3 C.png" id="7_v5ds0"]
-[ext_resource type="Script" path="res://UI/stamina_bar.gd" id="8_2wr40"]
+[ext_resource type="Script" path="res://ui/stamina_bar.gd" id="8_2wr40"]
 [ext_resource type="Script" path="res://entities/components/scripts/stamina_component.gd" id="8_afltq"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_walk_state.gd" id="9_a15dp"]
 
