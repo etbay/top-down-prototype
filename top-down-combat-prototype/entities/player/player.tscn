@@ -145,7 +145,7 @@ rotation = -1.5708
 texture = ExtResource("7_v5ds0")
 hframes = 6
 vframes = 24
-frame = 71
+frame = 65
 
 [node name="AttackRadius" type="Area2D" parent="."]
 

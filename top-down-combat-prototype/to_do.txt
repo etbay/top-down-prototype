@@ -1,0 +1,14 @@
+game:
+	create game manager to contain game level and ui
+		connects player to hud
+
+player:
+	state machine:
+		implement action queue in player state machine
+		refactor/reorganize action state and have attack and other actions inherit
+		add charge state that tracks how long player holds input
+		chain charge state and action state to determine which attack state to use
+	items:
+		determine how to change animation/sprite based on weapon held
+			separate arms from body, combine arm and weapon sprite/animation
+		separate parts of body to be changed by equippables

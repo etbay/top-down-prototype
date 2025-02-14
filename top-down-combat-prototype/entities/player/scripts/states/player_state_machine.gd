@@ -1,4 +1,6 @@
 class_name PlayerStateMachine extends StateMachine
+## Manages player states, action states, and state queue
+
 
 signal notify_action(stamina: float, pause_time: float, action: Callable)
 
