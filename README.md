@@ -15,3 +15,8 @@
        - Uses stage 1 light attack, stage 2 heavy attack, and stage 3 medium attack
  - Some classes and attack stages are more advantagous in certain scenarios
  - Specializing in one class becomes more advantagous the longer you play (skill tree, leveling, perks, equipment set buffs, etc.)
+
+Inspirations:
+ - Hotline Miami (perspective)
+ - Dark Souls (combat, world/level design)
+ - Terraria (classes, progression)
