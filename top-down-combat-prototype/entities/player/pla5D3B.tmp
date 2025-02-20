@@ -1,36 +1,21 @@
-[gd_scene load_steps=23 format=3 uid="uid://bqpajljvxwv33"]
+[gd_scene load_steps=16 format=3 uid="uid://bqpajljvxwv33"]
 
 [ext_resource type="Script" path="res://entities/player/scripts/player_controller.gd" id="1_xugg5"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_state_machine.gd" id="2_7ixmu"]
 [ext_resource type="Texture2D" uid="uid://dbamkfkdb12yh" path="res://entities/player/assets/prototype_player.png" id="2_m1a1i"]
-[ext_resource type="Script" path="res://entities/player/player_stats.gd" id="2_poafd"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_attack_state.gd" id="3_g1rxv"]
 [ext_resource type="Script" path="res://entities/player/scripts/attack_radius_indicator.gd" id="4_ij6l8"]
 [ext_resource type="Texture2D" uid="uid://rkrab8ui20p5" path="res://entities/player/assets/attack_radius_indicator.png" id="4_kk2ty"]
-[ext_resource type="PackedScene" uid="uid://bjl853d4aysq2" path="res://ui/player_hud.tscn" id="6_c6sdx"]
+[ext_resource type="PackedScene" uid="uid://bjl853d4aysq2" path="res://UI/player_hud.tscn" id="6_c6sdx"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_idle_state.gd" id="7_lyuci"]
 [ext_resource type="Texture2D" uid="uid://dvc3rcsk8tv0y" path="res://entities/player/assets/Retro Impact Effect Pack 3 C.png" id="7_v5ds0"]
-[ext_resource type="Script" path="res://ui/stamina_bar.gd" id="8_2wr40"]
-[ext_resource type="Script" path="res://entities/components/scripts/stamina_component.gd" id="8_afltq"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_walk_state.gd" id="9_a15dp"]
-
-[sub_resource type="Resource" id="Resource_6ka4s"]
-script = ExtResource("2_poafd")
-max_stamina = 30.0
-stamina_regeneration_amount = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gdeqv"]
-bg_color = Color(0.3108, 0.42, 0.35812, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y85w6"]
-bg_color = Color(3.80233e-06, 0.719972, 0.334245, 1)
-
-[sub_resource type="Theme" id="Theme_1xgny"]
-ProgressBar/styles/background = SubResource("StyleBoxFlat_gdeqv")
-ProgressBar/styles/fill = SubResource("StyleBoxFlat_y85w6")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w64wb"]
 radius = 9.5
+
+[sub_resource type="Animation" id="Animation_dy21b"]
+resource_name = "walk"
 
 [sub_resource type="Animation" id="Animation_bcua4"]
 resource_name = "attack"
@@ -39,7 +24,7 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerSprite2D/Sprite2D:frame")
+tracks/0/path = NodePath("Sprite2D/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -51,7 +36,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("PlayerSprite2D/Sprite2D:visible")
+tracks/1/path = NodePath("Sprite2D/Sprite2D:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -60,9 +45,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [true]
 }
-
-[sub_resource type="Animation" id="Animation_dy21b"]
-resource_name = "walk"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qnwkx"]
 _data = {
@@ -73,16 +55,17 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_bta2m"]
 radius = 60.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "state_machine", "stamina")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "state_machine", "stamina_bar")]
 script = ExtResource("1_xugg5")
-player_sprite = NodePath("PlayerSprite2D")
+player_sprite = NodePath("Sprite2D")
 state_machine = NodePath("StateMachine")
-player_stats = SubResource("Resource_6ka4s")
-stamina = NodePath("StaminaComponent")
+stamina_bar = NodePath("Camera2D/PlayerHud/ProgressBar")
+max_stamina = 30.0
+stamina_regeneration = 2.5
 
-[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("action_states", "entity", "initial_state")]
+[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("combat_states", "entity", "initial_state")]
 script = ExtResource("2_7ixmu")
-action_states = [NodePath("LightAttack")]
+combat_states = [NodePath("LightAttack")]
 entity = NodePath("..")
 initial_state = NodePath("Idle")
 
@@ -96,8 +79,7 @@ WALK_ACCELERATION = 50.0
 [node name="LightAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player")]
 script = ExtResource("3_g1rxv")
 animation_player = NodePath("../../AnimationPlayer")
-action_length = 0.7
-stamina_cost = 2.0
+attack_length = 0.7
 
 [node name="MediumAttack" type="Node2D" parent="StateMachine"]
 
@@ -116,30 +98,25 @@ offset_right = -116.0
 offset_bottom = -65.0
 scale = Vector2(0.2, 0.2)
 
-[node name="StaminaBar" parent="Camera2D/PlayerHud" index="0" node_paths=PackedStringArray("stamina_component")]
-offset_right = 19.0
-theme = SubResource("Theme_1xgny")
-script = ExtResource("8_2wr40")
-stamina_component = NodePath("../../../StaminaComponent")
+[node name="ProgressBar" parent="Camera2D/PlayerHud" index="0"]
+show_percentage = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.5)
 rotation = 1.5708
 shape = SubResource("CircleShape2D_w64wb")
 
-[node name="StaminaComponent" type="Node" parent="."]
-script = ExtResource("8_afltq")
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_qnwkx")
 }
 
-[node name="PlayerSprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_m1a1i")
 offset = Vector2(0, 3)
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerSprite2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D"]
+visible = false
 position = Vector2(0, 23)
 rotation = -1.5708
 texture = ExtResource("7_v5ds0")
@@ -158,7 +135,7 @@ position = Vector2(-18, -19)
 texture = ExtResource("4_kk2ty")
 script = ExtResource("4_ij6l8")
 attack_radius = NodePath("../AttackRadius/Radius Distance")
-sprite_2d = NodePath("../PlayerSprite2D")
+sprite_2d = NodePath("../Sprite2D")
 
 [connection signal="body_entered" from="AttackRadius" to="." method="_on_attack_radius_entered"]
 [connection signal="body_exited" from="AttackRadius" to="." method="_on_attack_radius_exited"]

@@ -1,0 +1,53 @@
+class_name PlayerStateMachine extends StateMachine
+## Manages player states, action states, and state queue
+
+
+signal notify_action(stamina: float, pause_time: float, action: Callable)
+
+## List of all combat [State] behaviors.
+@export var action_states: Array[State]
+## States in line to be performed next. Capped at [member _max_states_queued].
+var action_state_queue: Array[String]
+var _max_states_queued: int = 3
+
+func _ready() -> void:
+	populate_states(initial_state)
+
+func _process(delta: float) -> void:
+	self.process_state(delta)
+
+## Initializes [StateMachine].
+func populate_states(initial_state: State) -> void:
+	# Initialize and enter starting state
+	if initial_state != null:
+		current_state = initial_state
+		current_state.enter()
+	else:
+		assert(false, "Initial state of " + entity.name + " not set in " + self.name)
+	
+	var child_nodes: Array[Node] = self.get_children()
+	# Populate states dictionary
+	for node in child_nodes:
+		if node is State:
+			node.connect("change_state", Callable(self, "transition_to_state"))
+			if node is ActionState:
+				node.connect("attempting_action", Callable(self, "try_action"))
+			# Pass reference of entity to each state
+			node._entity = self.entity
+			states[node.name] = node
+
+func try_action(stamina: float, pause_time: float, action: Callable) -> void:
+	notify_action.emit(stamina, pause_time, action)
+
+## Processes [member current_state] behavior every frame.
+func process_state(delta: float) -> void:
+	current_state.process_behavior(delta)
+
+## Transitions from [member current_state] to [param next_state].
+func transition_to_state(next_state: String) -> void:
+	if states.has(next_state):
+		current_state.exit()
+		current_state = states[next_state]
+		current_state.enter()
+	else:
+		print("state not found, not changing")
