@@ -34,8 +34,7 @@ var _stamina: float:
 	set(val):
 		# Ensure new value is not current stamina
 		if val != _stamina:
-			val = clampf(val, 0.0, max_stamina)
-			_stamina = val
+			_stamina = clampf(val, 0.0, max_stamina)
 			# Inform listeners of change
 			stamina_changed.emit(_stamina)
 		# Inform listeners if stamina is empty or full
@@ -47,15 +46,15 @@ var _stamina: float:
 ## Will regenerate [member stamina] by this amount every second.
 @export var regeneration_amount: float = 0.0
 
-## Returns true if [member stamina] is empty.
-var is_stamina_empty: bool:
+# Returns true if stamina is empty.
+var _is_stamina_empty: bool:
 	get:
 		return _stamina <= 0.0
-## Returns true if [member stamina] is full.
-var is_stamina_full: bool:
+# Returns true if stamina is full.
+var _is_stamina_full: bool:
 	get:
 		return _stamina >= max_stamina
-# Returns true if stamina is paused, enabled and disabled in pause_stamina_regeneration
+# Returns true if stamina is paused, enabled and disabled in pause_stamina_regeneration.
 var _regen_paused: bool = false
 
 func _ready() -> void:
@@ -68,11 +67,11 @@ func _process(delta: float) -> void:
 
 # Regenerates stamina by regeneration_amount every second.
 func _regenerate_stamina(delta: float) -> void:
-	if not _regen_paused and not is_stamina_full and _stamina < max_stamina:
+	if not _regen_paused and not _is_stamina_full and _stamina < max_stamina:
 		_stamina += regeneration_amount * delta
 
 ## Drains current [member stamina] by [param drain_amount].
-func drain_by(drain_amount: float) -> bool:
+func try_drain_by(drain_amount: float) -> bool:
 	if (_stamina >= drain_amount):
 		_stamina -= drain_amount
 		return true

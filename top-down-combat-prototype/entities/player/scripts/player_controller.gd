@@ -19,7 +19,7 @@ func _initialize_components() -> void:
 	stamina.fill()
 
 func try_action(stamina_to_drain: float, pause_time: float, action: Callable) -> void:
-	if stamina.drain_by(stamina_to_drain):
+	if stamina.try_drain_by(stamina_to_drain):
 		stamina.pause_regeneration(pause_time)
 		action.call()
 
