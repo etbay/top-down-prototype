@@ -4,8 +4,6 @@ class_name PlayerStateMachine extends StateMachine
 
 signal notify_action(stamina: float, pause_time: float, action: Callable)
 
-## List of all combat [State] behaviors.
-@export var action_states: Array[State]
 ## States in line to be performed next. Capped at [member _max_states_queued].
 var action_state_queue: Array[String]
 var _max_states_queued: int = 3
@@ -23,6 +21,7 @@ func populate_states(initial_state: State) -> void:
 		current_state = initial_state
 		current_state.enter()
 	else:
+		# Throw error if initial state is null
 		assert(false, "Initial state of " + entity.name + " not set in " + self.name)
 	
 	var child_nodes: Array[Node] = self.get_children()

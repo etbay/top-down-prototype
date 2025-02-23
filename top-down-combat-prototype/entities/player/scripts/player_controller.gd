@@ -53,7 +53,7 @@ func face_mouse_direction() -> void:
 			var target_rotation = self.global_position.angle_to_point(get_global_mouse_position())
 			player_sprite.rotation = lerp_angle(player_sprite.rotation, target_rotation - deg_to_rad(90), 0.3)
 
-func die():
+func die() -> void:
 	print("man you dead")
 
 

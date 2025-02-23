@@ -53,17 +53,16 @@ var _is_health_full: bool:
 	get:
 		return _health >= max_health
 
-func _ready():
+func _ready() -> void:
 	hurtbox.connect("take_damage", Callable(self, "drain_by"))
 	_health = max_health
 	health_changed.emit(_health)
 
-func _process(delta: float):
+func _process(delta: float) -> void:
 	if regenerates_health:
 		_regenerate_health(delta)
-	print(_health)
 
-func _regenerate_health(delta: float):
+func _regenerate_health(delta: float) -> void:
 	if not _is_health_full and _health < max_health:
 		_health += regeneration_amount * delta
 
