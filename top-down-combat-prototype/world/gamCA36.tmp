@@ -43,7 +43,6 @@ modulate = Color(0.992424, 0, 0.232226, 1)
 texture = ExtResource("4_hxdui")
 
 [node name="Hitbox" parent="Enemy2" instance=ExtResource("5_q1plg")]
-damage = 5.0
 
 [node name="HitboxCollisionArea" parent="Enemy2/Hitbox" index="0"]
 shape = SubResource("CircleShape2D_uw1ey")

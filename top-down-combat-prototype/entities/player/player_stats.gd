@@ -7,3 +7,5 @@ signal max_stamina_changed()
 @export var max_stamina: float
 ## Amount of stamina player regenerates per second.
 @export var stamina_regeneration_amount: float
+## Max health player can hold.
+@export var max_health: float
