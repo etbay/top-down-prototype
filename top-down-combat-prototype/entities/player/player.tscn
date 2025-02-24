@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_state_machine.gd" id="2_7ixmu"]
 [ext_resource type="Texture2D" uid="uid://dbamkfkdb12yh" path="res://entities/player/assets/prototype_player.png" id="2_m1a1i"]
 [ext_resource type="Script" path="res://entities/player/player_stats.gd" id="2_poafd"]
-[ext_resource type="Script" path="res://entities/player/scripts/states/player_attack_state.gd" id="3_g1rxv"]
+[ext_resource type="Script" path="res://entities/scripts/action_state.gd" id="3_g1rxv"]
 [ext_resource type="Script" path="res://entities/player/scripts/attack_radius_indicator.gd" id="4_ij6l8"]
 [ext_resource type="Texture2D" uid="uid://rkrab8ui20p5" path="res://entities/player/assets/attack_radius_indicator.png" id="4_kk2ty"]
 [ext_resource type="PackedScene" uid="uid://bjl853d4aysq2" path="res://UI/player_hud.tscn" id="6_c6sdx"]
@@ -15,7 +15,7 @@
 [ext_resource type="Script" path="res://entities/components/scripts/stamina_component.gd" id="8_afltq"]
 [ext_resource type="Script" path="res://entities/player/health_bar.gd" id="9_5wavd"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_walk_state.gd" id="9_a15dp"]
-[ext_resource type="PackedScene" uid="uid://c8yq8ovc5agvm" path="res://entities/components/health_component.tscn" id="9_uby3d"]
+[ext_resource type="PackedScene" path="res://entities/components/health_component.tscn" id="9_uby3d"]
 
 [sub_resource type="Resource" id="Resource_6ka4s"]
 script = ExtResource("2_poafd")

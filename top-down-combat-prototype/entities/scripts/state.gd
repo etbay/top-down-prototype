@@ -12,7 +12,10 @@ var _entity: CharacterBody2D
 func enter() -> void:
 	assert(false, self.name + " state of " + self._entity.name + " does not implement Callable enter()")
 
-## Called every frame in entity's [StateMachine].
+func _process(delta: float) -> void:
+	process_behavior(delta)
+
+## Called every frame while [State] is active.
 func process_behavior(delta: float) -> void:
 	assert(false, self.name + " state of " + self._entity.name + " does not implement Callable process_behavior(delta: float)")
 

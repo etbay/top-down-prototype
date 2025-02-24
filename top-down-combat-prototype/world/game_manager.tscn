@@ -1,3 +1,10 @@
-[gd_scene format=3 uid="uid://duxc37o55f53"]
+[gd_scene load_steps=2 format=3 uid="uid://duxc37o55f53"]
+
+[ext_resource type="PackedScene" uid="uid://vcqehg07dah4" path="res://world/game_scene.tscn" id="1_dv5h8"]
 
 [node name="GameManager" type="Node2D"]
+
+[node name="GameScene" parent="." instance=ExtResource("1_dv5h8")]
+
+[editable path="GameScene"]
+[editable path="GameScene/Enemy2/Hitbox"]
