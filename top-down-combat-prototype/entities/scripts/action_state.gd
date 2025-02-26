@@ -10,36 +10,14 @@ class_name ActionState extends State
 
 signal attempting_action(action_cost: float, action_length: float, process_action: Callable)
 
-@export var animation_player: AnimationPlayer
-@export var action_length: float = 5.0
-@export var stamina_cost: float = 5.0
-var _action_timer: float = 0.0
-var can_perform_action: bool = false
-var attack_direction: Vector2
-
-## Enter player attack [State].
-## Initiates attack if player has enough stamina.
+## Enter this [ActionState].
 func enter() -> void:
-	attempting_action.emit(stamina_cost, action_length, process_action)
+	assert(false, self.name + " state of " + self._entity.name + " does not implement Callable enter()")
 
-## Begins action if there is enough stamina.
-func process_action() -> void:
-	animation_player.play("attack")
-	
-	attack_direction = get_local_mouse_position().normalized()
-	_entity.velocity = attack_direction * 500
-	can_perform_action = true
-
-## Called every frame in entity's [StateMachine].
+## Called every frame while [ActionState] is active.
 func process_behavior(delta: float) -> void:
-	if _action_timer <= action_length and can_perform_action:
-		_action_timer += delta
-		_entity.velocity = _entity.velocity.move_toward(Vector2.ZERO, 50)
-		_entity.move_and_slide()
-	else:
-		change_state.emit("Idle")
+	assert(false, self.name + " state of " + self._entity.name + " does not implement Callable process_behavior()")
 
 ## Exit this [State].
 func exit() -> void:
-	can_perform_action = false
-	_action_timer = 0.0
+	assert(false, self.name + " state of " + self._entity.name + " does not implement Callable exit()")
