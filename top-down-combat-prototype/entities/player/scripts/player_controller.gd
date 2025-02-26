@@ -8,15 +8,34 @@ class_name PlayerController extends CharacterBody2D
 @export var state_machine: PlayerStateMachine
 @export var player_stats: PlayerStats
 @export var stamina: StaminaComponent
+@export var health: HealthComponent
 
 func _ready() -> void:
-	state_machine.connect("notify_action", Callable(self, "try_action"))
+	_verify_exports()
+	_connect_to_signals()
 	_initialize_components()
+
+func _verify_exports() -> void:
+	if state_machine == null:
+		assert(false, "A StateMachine must be assigned to " + self.name + ".")
+	if player_stats == null:
+		assert(false, "A PlayerStats Resource must be assigned to " + self.name + ".")
+	if stamina == null:
+		assert(false, "A StaminaComponent must be assigned to " + self.name + ".")
+	if health == null:
+		assert(false, "A HealthComponent must be assigned to " + self.name + ".")
+
+func _connect_to_signals() -> void:
+	state_machine.connect("notify_action", Callable(self, "try_action"))
+	health.connect("health_empty", Callable(self, "die"))
 
 func _initialize_components() -> void:
 	stamina.max_stamina = player_stats.max_stamina
 	stamina.regeneration_amount = player_stats.stamina_regeneration_amount
 	stamina.fill()
+	
+	health.max_health = player_stats.max_health
+	health.fill()
 
 func try_action(stamina_to_drain: float, pause_time: float, action: Callable) -> void:
 	if stamina.try_drain_by(stamina_to_drain):
@@ -33,6 +52,10 @@ func face_mouse_direction() -> void:
 		if (get_local_mouse_position() - Vector2(0,0)).length() > 4:
 			var target_rotation = self.global_position.angle_to_point(get_global_mouse_position())
 			player_sprite.rotation = lerp_angle(player_sprite.rotation, target_rotation - deg_to_rad(90), 0.3)
+
+func die() -> void:
+	print("man you dead")
+
 
 #func regenerate_stamina(delta: float) -> void:
 	#if stamina < max_stamina:

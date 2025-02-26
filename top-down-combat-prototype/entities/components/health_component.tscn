@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8yq8ovc5agvm"]
+
+[ext_resource type="Script" path="res://entities/components/scripts/health_component.gd" id="1_6135u"]
+[ext_resource type="PackedScene" uid="uid://h4x237d0nc47" path="res://entities/components/hurtbox.tscn" id="2_6ejlg"]
+
+[node name="HealthComponent" type="Node2D" node_paths=PackedStringArray("hurtbox")]
+script = ExtResource("1_6135u")
+max_health = 100.0
+hurtbox = NodePath("Hurtbox")
+
+[node name="Hurtbox" parent="." instance=ExtResource("2_6ejlg")]
+
+[connection signal="area_entered" from="Hurtbox" to="Hurtbox" method="_on_area_entered"]
+
+[editable path="Hurtbox"]

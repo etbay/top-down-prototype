@@ -1,23 +1,27 @@
-[gd_scene load_steps=23 format=3 uid="uid://bqpajljvxwv33"]
+[gd_scene load_steps=30 format=3 uid="uid://bqpajljvxwv33"]
 
 [ext_resource type="Script" path="res://entities/player/scripts/player_controller.gd" id="1_xugg5"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_state_machine.gd" id="2_7ixmu"]
 [ext_resource type="Texture2D" uid="uid://dbamkfkdb12yh" path="res://entities/player/assets/prototype_player.png" id="2_m1a1i"]
 [ext_resource type="Script" path="res://entities/player/player_stats.gd" id="2_poafd"]
-[ext_resource type="Script" path="res://entities/player/scripts/states/player_attack_state.gd" id="3_g1rxv"]
+[ext_resource type="Script" path="res://entities/scripts/action_state.gd" id="3_g1rxv"]
 [ext_resource type="Script" path="res://entities/player/scripts/attack_radius_indicator.gd" id="4_ij6l8"]
 [ext_resource type="Texture2D" uid="uid://rkrab8ui20p5" path="res://entities/player/assets/attack_radius_indicator.png" id="4_kk2ty"]
 [ext_resource type="PackedScene" uid="uid://bjl853d4aysq2" path="res://UI/player_hud.tscn" id="6_c6sdx"]
+[ext_resource type="Script" path="res://entities/player/camera_zoom.gd" id="7_3b16v"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_idle_state.gd" id="7_lyuci"]
 [ext_resource type="Texture2D" uid="uid://dvc3rcsk8tv0y" path="res://entities/player/assets/Retro Impact Effect Pack 3 C.png" id="7_v5ds0"]
 [ext_resource type="Script" path="res://ui/stamina_bar.gd" id="8_2wr40"]
 [ext_resource type="Script" path="res://entities/components/scripts/stamina_component.gd" id="8_afltq"]
+[ext_resource type="Script" path="res://entities/player/health_bar.gd" id="9_5wavd"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_walk_state.gd" id="9_a15dp"]
+[ext_resource type="PackedScene" path="res://entities/components/health_component.tscn" id="9_uby3d"]
 
 [sub_resource type="Resource" id="Resource_6ka4s"]
 script = ExtResource("2_poafd")
 max_stamina = 30.0
 stamina_regeneration_amount = 2.0
+max_health = 50.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gdeqv"]
 bg_color = Color(0.3108, 0.42, 0.35812, 1)
@@ -29,8 +33,20 @@ bg_color = Color(3.80233e-06, 0.719972, 0.334245, 1)
 ProgressBar/styles/background = SubResource("StyleBoxFlat_gdeqv")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_y85w6")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l1da7"]
+bg_color = Color(0.993908, 0.631069, 0.580319, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0p4uu"]
+bg_color = Color(0.858824, 0.152941, 0.129412, 1)
+
+[sub_resource type="Theme" id="Theme_ehwq4"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_l1da7")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_0p4uu")
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_w64wb"]
 radius = 9.5
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fx57p"]
 
 [sub_resource type="Animation" id="Animation_bcua4"]
 resource_name = "attack"
@@ -73,16 +89,16 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_bta2m"]
 radius = 60.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "state_machine", "stamina")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("player_sprite", "state_machine", "stamina", "health")]
 script = ExtResource("1_xugg5")
 player_sprite = NodePath("PlayerSprite2D")
 state_machine = NodePath("StateMachine")
 player_stats = SubResource("Resource_6ka4s")
 stamina = NodePath("StaminaComponent")
+health = NodePath("HealthComponent")
 
-[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("action_states", "entity", "initial_state")]
+[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("entity", "initial_state")]
 script = ExtResource("2_7ixmu")
-action_states = [NodePath("LightAttack")]
 entity = NodePath("..")
 initial_state = NodePath("Idle")
 
@@ -108,6 +124,8 @@ stamina_cost = 2.0
 [node name="Dodge" type="Node2D" parent="StateMachine"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+script = ExtResource("7_3b16v")
 
 [node name="PlayerHud" parent="Camera2D" instance=ExtResource("6_c6sdx")]
 offset_left = -116.0
@@ -117,17 +135,36 @@ offset_bottom = -65.0
 scale = Vector2(0.2, 0.2)
 
 [node name="StaminaBar" parent="Camera2D/PlayerHud" index="0" node_paths=PackedStringArray("stamina_component")]
-offset_right = 19.0
+offset_left = 15.0
+offset_top = 60.0
+offset_right = 16.0
+offset_bottom = 87.0
 theme = SubResource("Theme_1xgny")
 script = ExtResource("8_2wr40")
 stamina_component = NodePath("../../../StaminaComponent")
+
+[node name="ProgressBar" type="ProgressBar" parent="Camera2D/PlayerHud" node_paths=PackedStringArray("health_component")]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 19.0
+offset_bottom = 42.0
+theme = SubResource("Theme_ehwq4")
+show_percentage = false
+script = ExtResource("9_5wavd")
+health_component = NodePath("../../../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.5)
 rotation = 1.5708
 shape = SubResource("CircleShape2D_w64wb")
 
-[node name="StaminaComponent" type="Node" parent="."]
+[node name="HealthComponent" parent="." instance=ExtResource("9_uby3d")]
+
+[node name="HurtboxCollisionArea" parent="HealthComponent/Hurtbox" index="0"]
+shape = SubResource("CircleShape2D_fx57p")
+
+[node name="StaminaComponent" type="Node2D" parent="."]
 script = ExtResource("8_afltq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -164,3 +201,5 @@ sprite_2d = NodePath("../PlayerSprite2D")
 [connection signal="body_exited" from="AttackRadius" to="." method="_on_attack_radius_exited"]
 
 [editable path="Camera2D/PlayerHud"]
+[editable path="HealthComponent"]
+[editable path="HealthComponent/Hurtbox"]

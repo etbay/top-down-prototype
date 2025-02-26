@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://entities/enemies/scripts/enemy.gd" id="3_qwd23"]
 [ext_resource type="Texture2D" uid="uid://i8jvp54sfi3e" path="res://entities/enemies/assets/placeholder.png" id="4_hxdui"]
 [ext_resource type="PackedScene" uid="uid://bqpajljvxwv33" path="res://entities/player/player.tscn" id="5_m0lgt"]
-[ext_resource type="PackedScene" path="res://entities/components/hitbox.tscn" id="5_q1plg"]
+[ext_resource type="PackedScene" uid="uid://dl2bbl5ecjm4u" path="res://entities/components/hitbox.tscn" id="5_q1plg"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ojt17"]
 
@@ -43,7 +43,6 @@ modulate = Color(0.992424, 0, 0.232226, 1)
 texture = ExtResource("4_hxdui")
 
 [node name="Hitbox" parent="Enemy2" instance=ExtResource("5_q1plg")]
-damage = 5.0
 
 [node name="HitboxCollisionArea" parent="Enemy2/Hitbox" index="0"]
 shape = SubResource("CircleShape2D_uw1ey")

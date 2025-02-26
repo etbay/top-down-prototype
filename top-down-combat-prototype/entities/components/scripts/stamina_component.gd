@@ -1,20 +1,22 @@
 @icon("res://editor icons/stamina_component.png")
-class_name StaminaComponent extends Node
+class_name StaminaComponent extends Node2D
 ## Attached to entities that consume [member stamina].
 # May add the following functionalities:
 #	Function that changes regeneration_amount for a time_in_seconds.
-#	Bool that determines if stamina increases in regeneration_amount over time.
 
 ## Emits signal when [member stamina] is changed.
 signal stamina_changed(new_stamina: float)
+
 ## Emits signal when [member max_stamina] is changed.
 signal max_stamina_changed(new_max_stamina: float)
+
 ## Emits signal when [member stamina] is empty.
 signal stamina_empty
+
 ## Emits signal when [member stamina] is full.
 signal stamina_full
 
-## Max [member stamina] entity can hold.
+## Max [member stamina] entity can have.
 @export var max_stamina: float = 0.0:
 	get:
 		return max_stamina
@@ -27,7 +29,7 @@ signal stamina_full
 				_stamina = max_stamina
 			# Inform listeners of change
 			max_stamina_changed.emit(max_stamina)
-## Contains current [member stamina] value.
+
 var _stamina: float:
 	get:
 		return _stamina
@@ -50,10 +52,12 @@ var _stamina: float:
 var _is_stamina_empty: bool:
 	get:
 		return _stamina <= 0.0
+
 # Returns true if stamina is full.
 var _is_stamina_full: bool:
 	get:
 		return _stamina >= max_stamina
+
 # Returns true if stamina is paused, enabled and disabled in pause_stamina_regeneration.
 var _regen_paused: bool = false
 
@@ -63,14 +67,14 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_regenerate_stamina(delta)
-	print(_stamina)
 
 # Regenerates stamina by regeneration_amount every second.
 func _regenerate_stamina(delta: float) -> void:
 	if not _regen_paused and not _is_stamina_full and _stamina < max_stamina:
 		_stamina += regeneration_amount * delta
 
-## Drains current [member stamina] by [param drain_amount].
+## Attempts to drain current [member stamina] by [param drain_amount].
+## Returns true if successful.
 func try_drain_by(drain_amount: float) -> bool:
 	if (_stamina >= drain_amount):
 		_stamina -= drain_amount
@@ -82,7 +86,7 @@ func try_drain_by(drain_amount: float) -> bool:
 func empty() -> void:
 	_stamina = 0.0
 
-## Increases current [member stamina] by [param gain_amount].
+## Increases current [member stamina] by [param increase_amount].
 func increase_by(increase_amount: float) -> void:
 	_stamina += increase_amount
 

@@ -1,4 +1,4 @@
-class_name StaminaBar extends ProgressBar
+extends ProgressBar
 ## Displays stamina of linked entity's [StaminaComponent].
 
 ## Reference to entity's [StaminaComponent].
