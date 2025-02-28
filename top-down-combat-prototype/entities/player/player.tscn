@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bqpajljvxwv33"]
+[gd_scene load_steps=31 format=3 uid="uid://bqpajljvxwv33"]
 
 [ext_resource type="Script" path="res://entities/player/scripts/player_controller.gd" id="1_xugg5"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_state_machine.gd" id="2_7ixmu"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://entities/player/charge_state_test.gd" id="6_7q8f5"]
 [ext_resource type="PackedScene" uid="uid://bjl853d4aysq2" path="res://UI/player_hud.tscn" id="6_c6sdx"]
 [ext_resource type="Script" path="res://entities/player/camera_zoom.gd" id="7_3b16v"]
+[ext_resource type="Script" path="res://entities/player/scripts/states/player_attack_state.gd" id="7_lpkev"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_idle_state.gd" id="7_lyuci"]
 [ext_resource type="Texture2D" uid="uid://dvc3rcsk8tv0y" path="res://entities/player/assets/Retro Impact Effect Pack 3 C.png" id="7_v5ds0"]
 [ext_resource type="Script" path="res://ui/stamina_bar.gd" id="8_2wr40"]
@@ -112,7 +113,10 @@ WALK_ACCELERATION = 50.0
 [node name="ChargeStateTest" type="Node2D" parent="StateMachine"]
 script = ExtResource("6_7q8f5")
 
-[node name="LightAttack" type="Node2D" parent="StateMachine"]
+[node name="LightAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("7_lpkev")
+animation_player = NodePath("../../AnimationPlayer")
+stamina_cost = 2.0
 
 [node name="MediumAttack" type="Node2D" parent="StateMachine"]
 

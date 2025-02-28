@@ -1,6 +1,10 @@
 class_name PlayerStateMachine extends StateMachine
 ## Manages player states, action states, and state queue
 
+#@export var entity: CharacterBody2D = null
+#@export var initial_state: State = null
+#var current_state: State
+#var states: Dictionary
 
 signal notify_action(stamina: float, pause_time: float, action: Callable)
 
@@ -13,7 +17,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	self.process_state(delta)
-	print(current_state.name)
+	#print(current_state.name)
 
 ## Initializes [StateMachine].
 func populate_states(initial_state: State) -> void:
@@ -35,6 +39,9 @@ func populate_states(initial_state: State) -> void:
 			# Pass reference of entity to each state
 			node._entity = self.entity
 			states[node.name] = node
+	
+	#for state in states:
+	#	print(state)
 
 func try_action(stamina: float, pause_time: float, action: Callable) -> void:
 	notify_action.emit(stamina, pause_time, action)
@@ -45,10 +52,11 @@ func process_state(delta: float) -> void:
 
 ## Transitions from [member current_state] to [param next_state].
 func transition_to_state(next_state: String) -> void:
-	print("transitioning from " + current_state.name + " to " + next_state)
-	if states.has(next_state):
-		current_state.exit()
-		current_state = states[next_state]
-		current_state.enter()
-	else:
-		print("state not found, not changing")
+	if next_state != current_state.name:
+		print("transitioning from " + current_state.name + " to " + next_state)
+		if states.has(next_state):
+			current_state.exit()
+			current_state = states[next_state]
+			current_state.enter()
+		else:
+			print("state not found, not changing")

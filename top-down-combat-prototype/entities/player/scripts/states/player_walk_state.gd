@@ -27,7 +27,7 @@ func process_input(delta: float) -> void:
 	_entity.move_and_slide()
 	
 	if Input.is_action_just_pressed("main_attack"):
-		change_state.emit("ChargeStateTest")
+		change_state.emit("LightAttack")
 
 ## Exit this [State].
 func exit() -> void:

@@ -18,7 +18,7 @@ func process_input(delta: float) -> void:
 	if Input.get_vector("move_left", "move_right", "move_up", "move_down") != Vector2.ZERO:
 		change_state.emit("Walk")
 	if Input.is_action_just_pressed("main_attack"):
-		change_state.emit("ChargeStateTest")
+		change_state.emit("LightAttack")
 
 ## Exit this [State].
 func exit() -> void:
