@@ -2,6 +2,7 @@ player stats
 state machine
 	determined by class
 		inserted as components to be called by state machine
+	walk
 	dodge
 	parry
 	attack

@@ -9,11 +9,12 @@ extends State
 
 ## Enter this [State].
 func enter() -> void:
-	pass
+	is_active = true
 
 ## Called every frame in entity's [StateMachine].
 func process_behavior(delta: float) -> void:
-	process_input(delta)
+	if is_active:
+		process_input(delta)
 
 ## Processes player input and detects state changes.
 func process_input(delta: float) -> void:
@@ -27,8 +28,8 @@ func process_input(delta: float) -> void:
 	_entity.move_and_slide()
 	
 	if Input.is_action_just_pressed("main_attack"):
-		change_state.emit("LightAttack")
+		change_state.emit("ChargeStateTest")
 
 ## Exit this [State].
 func exit() -> void:
-	pass
+	is_active = false

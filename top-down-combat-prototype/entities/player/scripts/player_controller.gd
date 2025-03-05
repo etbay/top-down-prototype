@@ -1,8 +1,11 @@
-class_name PlayerController extends CharacterBody2D
+class_name PlayerController extends Entity
 ## Controls player movement and input
 ##
 ## Detects input and switches state using state machine (not implemented)
 ## Need to move enemy detection to attack radius
+
+#Entity
+#var FRICTION: float = 50
 
 @export var player_sprite: Sprite2D
 @export var state_machine: PlayerStateMachine
@@ -11,6 +14,7 @@ class_name PlayerController extends CharacterBody2D
 @export var health: HealthComponent
 
 func _ready() -> void:
+	FRICTION = 20
 	_verify_exports()
 	_connect_to_signals()
 	_initialize_components()

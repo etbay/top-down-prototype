@@ -17,7 +17,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	self.process_state(delta)
-	#print(current_state.name)
 
 ## Initializes [StateMachine].
 func populate_states(initial_state: State) -> void:
@@ -52,11 +51,10 @@ func process_state(delta: float) -> void:
 
 ## Transitions from [member current_state] to [param next_state].
 func transition_to_state(next_state: String) -> void:
-	if next_state != current_state.name:
-		print("transitioning from " + current_state.name + " to " + next_state)
-		if states.has(next_state):
-			current_state.exit()
-			current_state = states[next_state]
-			current_state.enter()
-		else:
-			print("state not found, not changing")
+	#print("transitioning from " + current_state.name + " to " + next_state)
+	if states.has(next_state):
+		current_state.exit()
+		current_state = states[next_state]
+		current_state.enter()
+	else:
+		print("state not found, not changing")

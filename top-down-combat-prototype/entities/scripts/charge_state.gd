@@ -1,12 +1,9 @@
-class_name ChargeState extends ActionState
+class_name ChargeState extends State
 ## Defines behavior for a charged action
 
 #State
 #signal change_state(new_state: String)
 #var _entity: CharacterBody2D
-
-#ActionState
-#signal attempting_action(action_cost: float, action_length: float, process_action: Callable)
 
 var hold_length: float
 
