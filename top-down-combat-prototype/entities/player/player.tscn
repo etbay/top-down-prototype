@@ -116,7 +116,7 @@ script = ExtResource("6_v16c7")
 [node name="LightAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player")]
 script = ExtResource("6_g7kku")
 animation_player = NodePath("../../AnimationPlayer")
-action_length = 1.5
+action_length = 0.7
 
 [node name="MediumAttack" type="Node2D" parent="StateMachine"]
 

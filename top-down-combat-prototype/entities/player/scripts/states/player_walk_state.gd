@@ -29,6 +29,8 @@ func process_input(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("main_attack"):
 		change_state.emit("ChargeStateTest")
+	if Input.is_action_just_pressed("parry"):
+		change_state.emit("LightAttack")
 
 ## Exit this [State].
 func exit() -> void:

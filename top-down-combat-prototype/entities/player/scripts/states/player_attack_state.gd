@@ -21,6 +21,7 @@ func enter() -> void:
 
 ## Begins action if there is enough stamina.
 func process_action() -> void:
+	print("started attacking")
 	is_active = true
 	animation_player.play("attack")
 	
@@ -34,8 +35,12 @@ func process_behavior(delta: float) -> void:
 			_action_timer += delta
 			_entity.velocity = _entity.velocity.move_toward(Vector2.ZERO, 50)
 			_entity.move_and_slide()
+			if Input.is_action_just_pressed("parry"):
+				change_state.emit("LightAttack")
 		else:
-			change_state.emit("Idle")
+			is_active = false
+	else:
+		change_state.emit("Idle")
 
 ## Exit this [State].
 func exit() -> void:

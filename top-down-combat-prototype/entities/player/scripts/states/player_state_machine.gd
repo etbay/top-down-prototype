@@ -52,9 +52,16 @@ func process_state(delta: float) -> void:
 ## Transitions from [member current_state] to [param next_state].
 func transition_to_state(next_state: String) -> void:
 	#print("transitioning from " + current_state.name + " to " + next_state)
-	if states.has(next_state):
-		current_state.exit()
-		current_state = states[next_state]
-		current_state.enter()
+	if current_state is ActionState and states[next_state] is ActionState:
+		action_state_queue.append(next_state)
+	elif states.has(next_state):
+		if not action_state_queue.is_empty():
+			next_state = action_state_queue.pop_front()
+		_change_current_state(next_state)
 	else:
 		print("state not found, not changing")
+
+func _change_current_state(next_state: String) -> void:
+	current_state.exit()
+	current_state = states[next_state]
+	current_state.enter()
