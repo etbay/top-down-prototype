@@ -53,7 +53,8 @@ func process_state(delta: float) -> void:
 func transition_to_state(next_state: String) -> void:
 	#print("transitioning from " + current_state.name + " to " + next_state)
 	if current_state is ActionState and states[next_state] is ActionState:
-		action_state_queue.append(next_state)
+		if action_state_queue.size() < 2:
+			action_state_queue.append(next_state)
 	elif states.has(next_state):
 		if not action_state_queue.is_empty():
 			next_state = action_state_queue.pop_front()
