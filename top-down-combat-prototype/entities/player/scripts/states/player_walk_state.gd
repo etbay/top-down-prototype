@@ -24,6 +24,8 @@ func process_input(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("main_attack"):
 		change_state.emit("AttackSelector")
+	if Input.is_action_just_pressed("dodge"):
+		change_state.emit("Dodge")
 
 ## Exit this [State].
 func exit() -> void:

@@ -1,23 +1,25 @@
-[gd_scene load_steps=32 format=3 uid="uid://bqpajljvxwv33"]
+[gd_scene load_steps=36 format=3 uid="uid://bqpajljvxwv33"]
 
 [ext_resource type="Script" path="res://entities/player/scripts/player_controller.gd" id="1_xugg5"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_state_machine.gd" id="2_7ixmu"]
 [ext_resource type="Texture2D" uid="uid://dbamkfkdb12yh" path="res://entities/player/assets/prototype_player.png" id="2_m1a1i"]
-[ext_resource type="Script" path="res://entities/player/player_stats.gd" id="2_poafd"]
+[ext_resource type="Script" path="res://entities/player/scripts/player_stats.gd" id="2_poafd"]
 [ext_resource type="Script" path="res://entities/player/scripts/attack_radius_indicator.gd" id="4_ij6l8"]
 [ext_resource type="Texture2D" uid="uid://rkrab8ui20p5" path="res://entities/player/assets/attack_radius_indicator.png" id="4_kk2ty"]
 [ext_resource type="PackedScene" uid="uid://bjl853d4aysq2" path="res://UI/player_hud.tscn" id="6_c6sdx"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_attack_state.gd" id="6_g7kku"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_attack_selector_state.gd" id="6_v16c7"]
-[ext_resource type="Script" path="res://entities/player/camera_zoom.gd" id="7_3b16v"]
+[ext_resource type="Script" path="res://entities/player/scripts/camera_zoom.gd" id="7_3b16v"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_idle_state.gd" id="7_lyuci"]
 [ext_resource type="Texture2D" uid="uid://dvc3rcsk8tv0y" path="res://entities/player/assets/Retro Impact Effect Pack 3 C.png" id="7_v5ds0"]
 [ext_resource type="Script" path="res://ui/stamina_bar.gd" id="8_2wr40"]
 [ext_resource type="Script" path="res://entities/components/scripts/stamina_component.gd" id="8_afltq"]
+[ext_resource type="Script" path="res://entities/player/scripts/states/player_parry_state.gd" id="8_spxn0"]
 [ext_resource type="Script" path="res://UI/health_bar.gd" id="9_5wavd"]
 [ext_resource type="Script" path="res://entities/player/scripts/states/player_walk_state.gd" id="9_a15dp"]
+[ext_resource type="Script" path="res://entities/player/scripts/states/player_dodge_state.gd" id="9_dvjqr"]
 [ext_resource type="PackedScene" uid="uid://c8yq8ovc5agvm" path="res://entities/components/health_component.tscn" id="9_uby3d"]
-[ext_resource type="Script" path="res://entities/player/test_display_attack_selector.gd" id="12_o0loa"]
+[ext_resource type="Script" path="res://entities/player/scripts/test_display_attack_selector.gd" id="12_o0loa"]
 
 [sub_resource type="Resource" id="Resource_6ka4s"]
 script = ExtResource("2_poafd")
@@ -50,14 +52,17 @@ radius = 9.5
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fx57p"]
 
+[sub_resource type="Animation" id="Animation_dy21b"]
+resource_name = "walk"
+
 [sub_resource type="Animation" id="Animation_bcua4"]
-resource_name = "attack"
+resource_name = "light_attack"
 length = 0.7
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerSprite2D/Sprite2D:frame")
+tracks/0/path = NodePath("PlayerSprite2D/AttackSprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -69,7 +74,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("PlayerSprite2D/Sprite2D:visible")
+tracks/1/path = NodePath("PlayerSprite2D/AttackSprite2D:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -79,12 +84,69 @@ tracks/1/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_dy21b"]
-resource_name = "walk"
+[sub_resource type="Animation" id="Animation_gh54y"]
+resource_name = "medium_attack"
+length = 0.7
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite2D/AttackSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [71, 72, 73, 74, 75, 76, 77]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite2D/AttackSprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_eje37"]
+resource_name = "heavy_attack"
+length = 0.7
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite2D/AttackSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [53, 54, 55, 56, 57, 58, 59]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite2D/AttackSprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qnwkx"]
 _data = {
-"attack": SubResource("Animation_bcua4"),
+"heavy_attack": SubResource("Animation_eje37"),
+"light_attack": SubResource("Animation_bcua4"),
+"medium_attack": SubResource("Animation_gh54y"),
 "walk": SubResource("Animation_dy21b")
 }
 
@@ -117,14 +179,28 @@ script = ExtResource("6_v16c7")
 script = ExtResource("6_g7kku")
 animation_player = NodePath("../../AnimationPlayer")
 action_length = 0.7
+stamina_cost = 2.0
+animation_name = "light_attack"
 
-[node name="MediumAttack" type="Node2D" parent="StateMachine"]
+[node name="MediumAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("6_g7kku")
+animation_player = NodePath("../../AnimationPlayer")
+action_length = 0.7
+stamina_cost = 4.0
+animation_name = "medium_attack"
 
-[node name="HeavyAttack" type="Node2D" parent="StateMachine"]
+[node name="HeavyAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("6_g7kku")
+animation_player = NodePath("../../AnimationPlayer")
+action_length = 0.7
+stamina_cost = 7.0
+animation_name = "heavy_attack"
 
 [node name="Parry" type="Node2D" parent="StateMachine"]
+script = ExtResource("8_spxn0")
 
 [node name="Dodge" type="Node2D" parent="StateMachine"]
+script = ExtResource("9_dvjqr")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
@@ -164,8 +240,24 @@ offset_top = 210.0
 offset_right = 695.0
 offset_bottom = 237.0
 max_value = 3.0
+value = 2.0
+show_percentage = false
 script = ExtResource("12_o0loa")
 attack_selector = NodePath("../../../StateMachine/AttackSelector")
+
+[node name="ColorRect" type="ColorRect" parent="Camera2D/PlayerHud/ProgressBar2"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = -5.0
+offset_right = 77.0
+offset_bottom = 5.0
+
+[node name="ColorRect2" type="ColorRect" parent="Camera2D/PlayerHud/ProgressBar2"]
+layout_mode = 0
+offset_left = 147.003
+offset_top = -5.08278
+offset_right = 149.003
+offset_bottom = 4.91722
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.5)
@@ -189,17 +281,19 @@ libraries = {
 texture = ExtResource("2_m1a1i")
 offset = Vector2(0, 3)
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerSprite2D"]
+[node name="AttackSprite2D" type="Sprite2D" parent="PlayerSprite2D"]
+visible = false
 position = Vector2(0, 23)
 rotation = -1.5708
 texture = ExtResource("7_v5ds0")
 hframes = 6
 vframes = 24
-frame = 65
+frame = 71
 
 [node name="AttackRadius" type="Area2D" parent="."]
 
 [node name="Radius Distance" type="CollisionShape2D" parent="AttackRadius"]
+position = Vector2(2, -3)
 shape = SubResource("CircleShape2D_bta2m")
 
 [node name="AttackRadiusIndicator" type="Sprite2D" parent="." node_paths=PackedStringArray("attack_radius", "sprite_2d")]

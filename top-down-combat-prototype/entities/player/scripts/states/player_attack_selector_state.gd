@@ -12,7 +12,6 @@ extends ChargeState
 ## Enter this [ChargeState].
 func enter() -> void:
 	is_active = true
-	print("entered chargetest")
 
 ## Called every frame in parent while [ChargeState] is active.
 func process_behavior(delta: float) -> void:
@@ -27,12 +26,17 @@ func process_behavior(delta: float) -> void:
 
 func process_input(delta: float) -> void:
 	if Input.is_action_just_released("main_attack"):
-		change_state.emit("LightAttack")
+		if hold_length <= 1:
+			change_state.emit("LightAttack")
+		elif hold_length <= 2:
+			change_state.emit("MediumAttack")
+		else:
+			change_state.emit("HeavyAttack")
 	else:
 		hold_length += delta
 
 ## Exit this [ChargeState].
 func exit() -> void:
-	print("Held for: " + str(hold_length) + " seconds")
+	#print("Held for: " + str(hold_length) + " seconds")
 	is_active = false
 	hold_length = 0.0
