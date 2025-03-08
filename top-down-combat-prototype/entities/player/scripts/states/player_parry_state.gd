@@ -1,6 +1,6 @@
 extends ActionState
 #State
-#signal change_state(new_state: String)
+#signal change_state(new_state: State)
 #var _entity: CharacterBody2D
 #var is_active: bool = false
 

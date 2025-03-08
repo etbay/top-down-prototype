@@ -1,8 +1,9 @@
 extends State
-## Defines behavior [State] for an entity.
-##
-## Requires a [StateMachine] parent to manage [State] transitions.
-## @experimental
+
+#State
+#signal change_state(new_state: String)
+#var _entity: CharacterBody2D
+#var is_active: bool = false
 
 @export_group("Transition Set")
 @export var idle_state: State

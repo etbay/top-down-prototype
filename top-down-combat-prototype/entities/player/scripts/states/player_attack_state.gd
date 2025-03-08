@@ -1,7 +1,7 @@
 extends ActionState
 
 #State
-#signal change_state(new_state: String)
+#signal change_state(new_state: State)
 #var _entity: CharacterBody2D
 #var is_active: bool = false
 
@@ -39,8 +39,6 @@ func process_behavior(delta: float) -> void:
 			_action_timer += delta
 			_entity.velocity = _entity.velocity.move_toward(Vector2.ZERO, 50)
 			_entity.move_and_slide()
-			if Input.is_action_just_pressed("main_attack"):
-				change_state.emit(attack_selector_state)
 		else:
 			is_active = false
 	else:

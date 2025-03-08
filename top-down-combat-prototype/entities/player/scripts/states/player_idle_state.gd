@@ -1,5 +1,6 @@
 extends State
 
+#State
 #signal change_state(new_state: String)
 #var _entity: CharacterBody2D
 #var is_active: bool = false

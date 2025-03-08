@@ -161,9 +161,8 @@ player_stats = SubResource("Resource_6ka4s")
 stamina = NodePath("StaminaComponent")
 health = NodePath("HealthComponent")
 
-[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("attack_selector_state", "entity", "initial_state")]
+[node name="StateMachine" type="Node2D" parent="." node_paths=PackedStringArray("entity", "initial_state")]
 script = ExtResource("2_7ixmu")
-attack_selector_state = NodePath("AttackSelector")
 entity = NodePath("..")
 initial_state = NodePath("Idle")
 
@@ -179,9 +178,8 @@ idle_state = NodePath("../Idle")
 attack_selector_state = NodePath("../AttackSelector")
 dodge_state = NodePath("../Dodge")
 
-[node name="AttackSelector" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("entity", "light_attack_state", "medium_attack_state", "heavy_attack_state")]
+[node name="AttackSelector" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("light_attack_state", "medium_attack_state", "heavy_attack_state")]
 script = ExtResource("6_v16c7")
-entity = NodePath("../..")
 light_attack_state = NodePath("LightAttack")
 medium_attack_state = NodePath("MediumAttack")
 heavy_attack_state = NodePath("HeavyAttack")

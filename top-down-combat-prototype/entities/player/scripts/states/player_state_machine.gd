@@ -12,6 +12,8 @@ signal notify_action(stamina: float, pause_time: float, action: Callable)
 var action_state_queue: Array[State]
 var _max_states_queued: int = 3
 
+@export var attack_selector_state: ChargeState
+
 func _ready() -> void:
 	populate_states(initial_state)
 
@@ -33,7 +35,7 @@ func populate_states(initial_state: State) -> void:
 	for node in child_nodes:
 		if node is State:
 			node.connect("change_state", Callable(self, "transition_to_state"))
-			if node is ActionState:
+			if node is ActionState or node is ChargeState:
 				node.connect("attempting_action", Callable(self, "try_action"))
 			# Pass reference of entity to each state
 			node._entity = self.entity
@@ -48,6 +50,7 @@ func try_action(stamina: float, pause_time: float, action: Callable) -> void:
 ## Processes [member current_state] behavior every frame.
 func process_state(delta: float) -> void:
 	current_state.process_behavior(delta)
+	attack_selector_state.process_behavior(delta)
 
 ## Transitions from [member current_state] to [param next_state].
 func transition_to_state(next_state: State) -> void:
@@ -55,12 +58,10 @@ func transition_to_state(next_state: State) -> void:
 	if current_state is ActionState and next_state is ActionState:
 		if action_state_queue.size() < 2:
 			action_state_queue.append(next_state)
-	elif states.has(next_state.name):
+	elif next_state is not ChargeState:
 		if not action_state_queue.is_empty():
 			next_state = action_state_queue.pop_front()
 		_change_current_state(next_state)
-	else:
-		print("state not found, not changing")
 
 func _change_current_state(next_state: State) -> void:
 	current_state.exit()
