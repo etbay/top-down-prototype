@@ -166,41 +166,57 @@ script = ExtResource("2_7ixmu")
 entity = NodePath("..")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node2D" parent="StateMachine"]
+[node name="Idle" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("walk_state", "attack_selector_state", "dodge_state")]
 script = ExtResource("7_lyuci")
+walk_state = NodePath("../Walk")
+attack_selector_state = NodePath("../AttackSelector")
+dodge_state = NodePath("../Dodge")
 
-[node name="Walk" type="Node2D" parent="StateMachine"]
+[node name="Walk" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("idle_state", "attack_selector_state", "dodge_state")]
 script = ExtResource("9_a15dp")
+idle_state = NodePath("../Idle")
+attack_selector_state = NodePath("../AttackSelector")
+dodge_state = NodePath("../Dodge")
 
-[node name="AttackSelector" type="Node2D" parent="StateMachine"]
+[node name="AttackSelector" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("light_attack_state", "medium_attack_state", "heavy_attack_state")]
 script = ExtResource("6_v16c7")
+light_attack_state = NodePath("../LightAttack")
+medium_attack_state = NodePath("../MediumAttack")
+heavy_attack_state = NodePath("../HeavyAttack")
 
-[node name="LightAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player")]
+[node name="LightAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player", "attack_selector_state", "idle_state")]
 script = ExtResource("6_g7kku")
 animation_player = NodePath("../../AnimationPlayer")
 action_length = 0.7
 stamina_cost = 2.0
 animation_name = "light_attack"
+attack_selector_state = NodePath("../AttackSelector")
+idle_state = NodePath("../Idle")
 
-[node name="MediumAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player")]
+[node name="MediumAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player", "attack_selector_state", "idle_state")]
 script = ExtResource("6_g7kku")
 animation_player = NodePath("../../AnimationPlayer")
 action_length = 0.7
 stamina_cost = 4.0
 animation_name = "medium_attack"
+attack_selector_state = NodePath("../AttackSelector")
+idle_state = NodePath("../Idle")
 
-[node name="HeavyAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player")]
+[node name="HeavyAttack" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("animation_player", "attack_selector_state", "idle_state")]
 script = ExtResource("6_g7kku")
 animation_player = NodePath("../../AnimationPlayer")
 action_length = 0.7
 stamina_cost = 7.0
 animation_name = "heavy_attack"
+attack_selector_state = NodePath("../AttackSelector")
+idle_state = NodePath("../Idle")
 
 [node name="Parry" type="Node2D" parent="StateMachine"]
 script = ExtResource("8_spxn0")
 
-[node name="Dodge" type="Node2D" parent="StateMachine"]
+[node name="Dodge" type="Node2D" parent="StateMachine" node_paths=PackedStringArray("idle_state")]
 script = ExtResource("9_dvjqr")
+idle_state = NodePath("../Idle")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true

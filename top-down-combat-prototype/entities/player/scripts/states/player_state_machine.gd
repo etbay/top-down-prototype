@@ -9,7 +9,7 @@ class_name PlayerStateMachine extends StateMachine
 signal notify_action(stamina: float, pause_time: float, action: Callable)
 
 ## States in line to be performed next. Capped at [member _max_states_queued].
-var action_state_queue: Array[String]
+var action_state_queue: Array[State]
 var _max_states_queued: int = 3
 
 func _ready() -> void:
@@ -50,19 +50,19 @@ func process_state(delta: float) -> void:
 	current_state.process_behavior(delta)
 
 ## Transitions from [member current_state] to [param next_state].
-func transition_to_state(next_state: String) -> void:
+func transition_to_state(next_state: State) -> void:
 	#print("transitioning from " + current_state.name + " to " + next_state)
-	if current_state is ActionState and states[next_state] is ActionState:
+	if current_state is ActionState and next_state is ActionState:
 		if action_state_queue.size() < 2:
 			action_state_queue.append(next_state)
-	elif states.has(next_state):
+	elif states.has(next_state.name):
 		if not action_state_queue.is_empty():
 			next_state = action_state_queue.pop_front()
 		_change_current_state(next_state)
 	else:
 		print("state not found, not changing")
 
-func _change_current_state(next_state: String) -> void:
+func _change_current_state(next_state: State) -> void:
 	current_state.exit()
-	current_state = states[next_state]
+	current_state = next_state
 	current_state.enter()

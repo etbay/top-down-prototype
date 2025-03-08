@@ -9,6 +9,11 @@ extends ChargeState
 #ChargedState
 #var hold_length: float
 
+@export_group("Transition Set")
+@export var light_attack_state: State
+@export var medium_attack_state: State
+@export var heavy_attack_state: State
+
 ## Enter this [ChargeState].
 func enter() -> void:
 	is_active = true
@@ -27,11 +32,11 @@ func process_behavior(delta: float) -> void:
 func process_input(delta: float) -> void:
 	if Input.is_action_just_released("main_attack"):
 		if hold_length <= 1:
-			change_state.emit("LightAttack")
+			change_state.emit(light_attack_state)
 		elif hold_length <= 2:
-			change_state.emit("MediumAttack")
+			change_state.emit(medium_attack_state)
 		else:
-			change_state.emit("HeavyAttack")
+			change_state.emit(heavy_attack_state)
 	else:
 		hold_length += delta
 

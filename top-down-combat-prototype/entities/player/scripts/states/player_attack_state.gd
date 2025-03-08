@@ -15,6 +15,10 @@ extends ActionState
 var _action_timer: float = 0.0
 var attack_direction: Vector2
 
+@export_group("Transition Set")
+@export var attack_selector_state: State
+@export var idle_state: State
+
 ## Enter player attack [State].
 ## Initiates attack if player has enough stamina.
 func enter() -> void:
@@ -36,11 +40,11 @@ func process_behavior(delta: float) -> void:
 			_entity.velocity = _entity.velocity.move_toward(Vector2.ZERO, 50)
 			_entity.move_and_slide()
 			if Input.is_action_just_pressed("main_attack"):
-				change_state.emit("AttackSelector")
+				change_state.emit(attack_selector_state)
 		else:
 			is_active = false
 	else:
-		change_state.emit("Idle")
+		change_state.emit(idle_state)
 
 ## Exit this [State].
 func exit() -> void:

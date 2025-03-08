@@ -5,7 +5,7 @@ class_name ActionState extends State
 ## @experimental
 
 #State
-#signal change_state(new_state: String)
+#signal change_state(new_state: State)
 #var _entity: CharacterBody2D
 
 signal attempting_action(action_cost: float, action_length: float, process_action: Callable)

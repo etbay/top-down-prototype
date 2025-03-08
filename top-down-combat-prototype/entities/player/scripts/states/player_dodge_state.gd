@@ -9,6 +9,10 @@ extends ActionState
 
 @export var stamina_cost: float = 3
 @export var action_length: float = 0.5
+
+@export_group("Transition Set")
+@export var idle_state: State
+
 var _action_timer: float = 0.0
 
 ## Enter this [ActionState].
@@ -33,7 +37,7 @@ func process_behavior(delta: float) -> void:
 		else:
 			is_active = false
 	else:
-		change_state.emit("Idle")
+		change_state.emit(idle_state)
 
 ## Exit this [State].
 func exit() -> void:

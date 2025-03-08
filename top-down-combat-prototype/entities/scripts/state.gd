@@ -5,7 +5,7 @@ class_name State extends Node2D
 ## @experimental
 
 ## Notifies [StateMachine] of what [State] to transition to.
-signal change_state(new_state: String)
+signal change_state(new_state: State)
 var _entity: CharacterBody2D
 var is_active: bool = false
 

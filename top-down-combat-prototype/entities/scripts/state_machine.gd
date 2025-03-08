@@ -42,10 +42,10 @@ func process_state(delta: float) -> void:
 	current_state.process_behavior(delta)
 
 ## Transitions from [member current_state] to [param next_state].
-func transition_to_state(next_state: String) -> void:
-	if states.has(next_state):
+func transition_to_state(next_state: State) -> void:
+	if states.has(next_state.name):
 		current_state.exit()
-		current_state = states[next_state]
+		current_state = next_state
 		current_state.enter()
 	else:
 		print("state not found, not changing")
