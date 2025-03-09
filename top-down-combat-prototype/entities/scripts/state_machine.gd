@@ -5,7 +5,7 @@ class_name StateMachine extends Node2D
 ## @experimental
 
 ## Contains a reference to the [CharacterBody2D] controlled by [StateMachine].
-@export var entity: CharacterBody2D = null
+@export var entity: Entity = null
 ## Contains the [State] the [member entity] will enter upon initialization.
 @export var initial_state: State = null
 ## Tracks the current active [State] of the [member entity].

@@ -9,7 +9,7 @@ class_name PlayerStateMachine extends StateMachine
 signal notify_action(stamina: float, pause_time: float, action: Callable)
 
 ## States in line to be performed next. Capped at [member _max_states_queued].
-var action_state_queue: Array[State]
+var action_state_queue: Array[ActionState]
 var _max_states_queued: int = 3
 
 @export var attack_selector_state: ChargeState

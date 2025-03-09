@@ -1,4 +1,4 @@
-extends ActionState
+class_name AttackState extends ActionState
 
 #State
 #signal change_state(new_state: State)
@@ -13,11 +13,12 @@ extends ActionState
 @export var stamina_cost: float = 5.0
 @export var animation_name: String
 var _action_timer: float = 0.0
-var attack_direction: Vector2
+var attack_direction: Vector2 = Vector2.ZERO
 
 @export_group("Transition Set")
 @export var attack_selector_state: State
 @export var idle_state: State
+var attack_stage: int
 
 ## Enter player attack [State].
 ## Initiates attack if player has enough stamina.
@@ -27,9 +28,9 @@ func enter() -> void:
 ## Begins action if there is enough stamina.
 func process_action() -> void:
 	is_active = true
+	print("Attacking in stage ", attack_stage)
 	animation_player.play(animation_name)
 	
-	attack_direction = get_local_mouse_position().normalized()
 	_entity.velocity = attack_direction * 500
 
 ## Called every frame in entity's [StateMachine].
@@ -37,8 +38,7 @@ func process_behavior(delta: float) -> void:
 	if is_active:
 		if _action_timer <= action_length:
 			_action_timer += delta
-			_entity.velocity = _entity.velocity.move_toward(Vector2.ZERO, 50)
-			_entity.move_and_slide()
+			EntityPhysics.apply_friction(_entity)
 		else:
 			is_active = false
 	else:
