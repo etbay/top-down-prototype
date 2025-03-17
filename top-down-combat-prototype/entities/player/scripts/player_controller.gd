@@ -41,10 +41,10 @@ func _initialize_components() -> void:
 	health.max_health = player_stats.max_health
 	health.fill()
 
-func try_action(stamina_to_drain: float, pause_time: float, action: Callable) -> void:
+func try_action(stamina_to_drain: float, pause_time: float, action: Callable, next_state: State) -> void:
 	if stamina.try_drain_by(stamina_to_drain):
 		stamina.pause_regeneration(pause_time)
-		action.call()
+		action.call(next_state)
 
 func _physics_process(delta: float) -> void:
 	face_mouse_direction()

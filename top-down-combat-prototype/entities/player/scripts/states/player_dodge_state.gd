@@ -7,9 +7,6 @@ extends ActionState
 #ActionState
 #signal attempting_action(action_cost: float, action_length: float, process_action: Callable)
 
-@export var stamina_cost: float = 3
-@export var action_length: float = 0.5
-
 @export_group("Transition Set")
 @export var idle_state: State
 
@@ -17,7 +14,7 @@ var _action_timer: float = 0.0
 
 ## Enter this [ActionState].
 func enter() -> void:
-	attempting_action.emit(stamina_cost, action_length, process_action)
+	attempting_action.emit(action_cost, action_length, process_action)
 
 func process_action() -> void:
 	var input_vector: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")

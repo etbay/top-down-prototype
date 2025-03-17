@@ -6,7 +6,7 @@ class_name PlayerStateMachine extends StateMachine
 #var current_state: State
 #var states: Dictionary
 
-signal notify_action(stamina: float, pause_time: float, action: Callable)
+signal notify_action(stamina: float, pause_time: float, action: Callable, next_state: State)
 
 ## States in line to be performed next. Capped at [member _max_states_queued].
 var action_state_queue: Array[ActionState]
@@ -56,7 +56,7 @@ func process_state(delta: float) -> void:
 func transition_to_state(next_state: State) -> void:
 	#print("transitioning from " + current_state.name + " to " + next_state)
 	if current_state is ActionState and next_state is ActionState:
-		if action_state_queue.size() < 2:
+		if action_state_queue.size() < 1:
 			action_state_queue.append(next_state)
 	elif next_state is not ChargeState:
 		if not action_state_queue.is_empty():
@@ -65,5 +65,12 @@ func transition_to_state(next_state: State) -> void:
 
 func _change_current_state(next_state: State) -> void:
 	current_state.exit()
+	# Checks if player has enough stamina before entering state
+	if next_state is ActionState:
+		notify_action.emit(next_state.action_cost, next_state.action_length, Callable(self, "_change_state"), next_state)
+	else:
+		_change_state(next_state)
+
+func _change_state(next_state: State) -> void:
 	current_state = next_state
 	current_state.enter()

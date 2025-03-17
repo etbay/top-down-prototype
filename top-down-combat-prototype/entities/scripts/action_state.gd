@@ -10,6 +10,9 @@ class_name ActionState extends State
 
 signal attempting_action(action_cost: float, action_length: float, process_action: Callable)
 
+@export var action_length: float = 5.0
+@export var action_cost: float = 5.0
+
 ## Enter this [ActionState].
 func enter() -> void:
 	assert(false, self.name + " state of " + self._entity.name + " does not implement Callable enter()")

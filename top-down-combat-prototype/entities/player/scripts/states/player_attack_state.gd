@@ -9,8 +9,6 @@ class_name AttackState extends ActionState
 #signal attempting_action(action_cost: float, action_length: float, process_action: Callable)
 
 @export var animation_player: AnimationPlayer
-@export var action_length: float = 5.0
-@export var stamina_cost: float = 5.0
 @export var animation_name: String
 var _action_timer: float = 0.0
 var attack_direction: Vector2 = Vector2.ZERO
@@ -23,7 +21,7 @@ var attack_stage: int
 ## Enter player attack [State].
 ## Initiates attack if player has enough stamina.
 func enter() -> void:
-	attempting_action.emit(stamina_cost, action_length, process_action)
+	process_action()
 
 ## Begins action if there is enough stamina.
 func process_action() -> void:
